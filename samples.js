@@ -572,7 +572,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/cinema-1.mp4",
     "mediaType": "video",
-    "poster": "assets/hero.webp",
+    "poster": "assets/thumb-cinema-1.webp",
     "duration": "12초"
   },
   {
@@ -589,7 +589,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/cinema-2.mp4",
     "mediaType": "video",
-    "poster": "assets/city.webp",
+    "poster": "assets/thumb-cinema-2.webp",
     "duration": "12초"
   },
   {
@@ -606,7 +606,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/cinema-3.mp4",
     "mediaType": "video",
-    "poster": "assets/mask.webp",
+    "poster": "assets/thumb-cinema-3.webp",
     "duration": "12초"
   },
   {
@@ -623,7 +623,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/motion-1.mp4",
     "mediaType": "video",
-    "poster": "assets/hero.webp",
+    "poster": "assets/thumb-motion-1.webp",
     "duration": "12초"
   },
   {
@@ -640,7 +640,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/motion-2.mp4",
     "mediaType": "video",
-    "poster": "assets/city.webp",
+    "poster": "assets/thumb-motion-2.webp",
     "duration": "12초"
   },
   {
@@ -657,7 +657,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/motion-3.mp4",
     "mediaType": "video",
-    "poster": "assets/mask.webp",
+    "poster": "assets/thumb-motion-3.webp",
     "duration": "12초"
   },
   {
@@ -674,7 +674,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/music-1.wav",
     "mediaType": "audio",
-    "poster": "assets/hero.webp",
+    "poster": "assets/thumb-music-1.webp",
     "duration": "18초"
   },
   {
@@ -691,7 +691,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/music-2.wav",
     "mediaType": "audio",
-    "poster": "assets/city.webp",
+    "poster": "assets/thumb-music-2.webp",
     "duration": "18초"
   },
   {
@@ -708,7 +708,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/music-3.wav",
     "mediaType": "audio",
-    "poster": "assets/mask.webp",
+    "poster": "assets/thumb-music-3.webp",
     "duration": "18초"
   },
   {
@@ -725,7 +725,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/hero.webp",
     "mediaType": "image",
-    "poster": "assets/hero.webp",
+    "poster": "assets/thumb-image-1.webp",
     "duration": "1점"
   },
   {
@@ -742,7 +742,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/city.webp",
     "mediaType": "image",
-    "poster": "assets/city.webp",
+    "poster": "assets/thumb-image-2.webp",
     "duration": "1점"
   },
   {
@@ -759,7 +759,7 @@ window.KOPORA_SAMPLES = [
     ],
     "media": "assets/mask.webp",
     "mediaType": "image",
-    "poster": "assets/mask.webp",
+    "poster": "assets/thumb-image-3.webp",
     "duration": "1점"
   }
 ];
