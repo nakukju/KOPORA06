@@ -93,6 +93,10 @@
 .pick-btn:active{transform:scale(.97)}
 .pick-intro{flex-basis:100%;margin:8px 0 0;font-size:15px;line-height:1.7;color:var(--ink)}
 .quick .rec{display:inline-block;margin-left:8px;padding:2px 7px;background:var(--yellow);color:var(--navy);font-size:11px;font-weight:700;letter-spacing:.02em;vertical-align:2px}
+/* 퀵메뉴 화살표: 지름 40px 원형 아웃라인(장식, 클릭 영역은 카드 전체). 카드 높이가 늘지 않도록 위아래 -2px */
+.quick .arrow{flex:none;display:grid;place-items:center;width:40px;height:40px;margin-block:-2px;border:1px solid #001f3f4d;border-radius:50%;color:var(--navy);font-size:16px;line-height:1;transition:background-color .2s ease,color .2s ease,border-color .2s ease}
+.quick a:focus-visible .arrow{background:var(--navy);border-color:var(--navy);color:#fff}
+@media(hover:hover){.quick a:hover .arrow{background:var(--navy);border-color:var(--navy);color:#fff}}
 @media(min-width:601px){
   .quick-grid{grid-template-columns:repeat(3,1fr)}
   .quick a,.quick a:first-child{padding:26px 20px;border-right:1px solid var(--line);border-bottom:0}
@@ -202,7 +206,7 @@
 
 /* 8. 동작 줄이기: 애니메이션 없이 즉시 표시 (모든 효과보다 뒤에 둠) */
 @media(prefers-reduced-motion:reduce){
-  .button,.entry,.list-card,.gallery-card,.story-panel,.mobile-toggle,.close,.tabs a,.pick-btn{transition:none}
+  .button,.entry,.list-card,.gallery-card,.story-panel,.mobile-toggle,.close,.tabs a,.pick-btn,.quick .arrow{transition:none}
   .button:hover,.button:active,.entry:hover,.entry:focus-visible,.list-card:hover,.list-card:focus-visible,.gallery-card:hover,.gallery-card:focus-visible,.mobile-toggle:active,.close:active,.tabs a:active,.pick-btn:active{transform:none}
   .reveal{opacity:1;translate:none}
 }
