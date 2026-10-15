@@ -131,6 +131,19 @@
 .step:focus,.steps-toc:focus{outline:none}
 .step:focus-visible,.steps-toc:focus-visible{outline:2px solid var(--navy);outline-offset:6px}
 
+/* 5-3. 문의하기 고정 버튼(mobile 브랜치에서 이식) — PC·태블릿은 오른쪽 아래 둥근 버튼, 모바일(≤600px)은 화면 아래 전체 폭 띠
+   푸터가 보일 때·연락처 페이지·모바일 메뉴가 열렸을 때는 app.js가 .is-hidden을 붙여 숨김 → 푸터와 메뉴를 가리지 않으므로 푸터 여백은 그대로 둠 */
+.contact-bar{position:fixed;right:24px;bottom:calc(24px + env(safe-area-inset-bottom));z-index:30;transition:opacity .2s ease,visibility .2s ease,translate .2s ease}
+.contact-bar.is-hidden{opacity:0;visibility:hidden;translate:0 10px}
+.contact-bar .button{margin-top:0;min-width:0;min-height:48px;gap:10px;padding:12px 24px;font-size:14px;border-radius:999px;box-shadow:0 10px 30px #001f3f40}
+.contact-bar .button span{color:var(--yellow)}
+@media(max-width:600px){
+  .contact-bar{left:0;right:0;bottom:0;padding:10px 18px calc(10px + env(safe-area-inset-bottom));background:#ffffffeb;border-top:1px solid var(--line);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .contact-bar .button{width:100%;justify-content:center;font-size:16px;border-radius:4px;box-shadow:none}
+  /* 검색창 입력 중에는 화상 키보드 위로 띠가 올라와 입력창을 가릴 수 있어 숨김 */
+  body:has(:is(input,select,textarea):focus) .contact-bar{display:none}
+}
+
 /* 6. 태블릿·모바일 공통(≤950px, 햄버거 메뉴 구간): 터치 영역 44px 이상 */
 @media(max-width:950px){
   .section{padding:72px 0}
@@ -206,7 +219,8 @@
 
 /* 8. 동작 줄이기: 애니메이션 없이 즉시 표시 (모든 효과보다 뒤에 둠) */
 @media(prefers-reduced-motion:reduce){
-  .button,.entry,.list-card,.gallery-card,.story-panel,.mobile-toggle,.close,.tabs a,.pick-btn,.quick .arrow{transition:none}
+  .button,.entry,.list-card,.gallery-card,.story-panel,.mobile-toggle,.close,.tabs a,.pick-btn,.quick .arrow,.contact-bar{transition:none}
+  .contact-bar.is-hidden{translate:none}
   .button:hover,.button:active,.entry:hover,.entry:focus-visible,.list-card:hover,.list-card:focus-visible,.gallery-card:hover,.gallery-card:focus-visible,.mobile-toggle:active,.close:active,.tabs a:active,.pick-btn:active{transform:none}
   .reveal{opacity:1;translate:none}
 }
