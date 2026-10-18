@@ -8,7 +8,7 @@
 /* =====================================================================
    KOPORA 추가 스타일 — 위의 기본 스타일(1~6줄) 뒤에 적용됩니다.
    순서: 1 토큰 → 2 카드 → 3 섹션·배경 → 4 글자 대비 → 5 마이크로 인터랙션
-         → 6 태블릿(≤950px) → 7 모바일(≤600px, 375px 기준) → 8 동작 줄이기
+         → 6 태블릿(≤950px) → 7 모바일(≤600px, 375px 기준) → 8 동작 줄이기 → 9 접근성 보완
    반응형 규칙은 기본 스타일의 같은 미디어 쿼리보다 뒤에 있어야 하므로 이 순서를 유지하세요.
    ===================================================================== */
 
@@ -223,4 +223,30 @@
   .contact-bar.is-hidden{translate:none}
   .button:hover,.button:active,.entry:hover,.entry:focus-visible,.list-card:hover,.list-card:focus-visible,.gallery-card:hover,.gallery-card:focus-visible,.mobile-toggle:active,.close:active,.tabs a:active,.pick-btn:active{transform:none}
   .reveal{opacity:1;translate:none}
+}
+
+/* 9. 접근성 보완(WCAG 2.2 AA) — 화면 배치·크기는 그대로 두고 키보드·화면낭독기 이용만 보완 */
+/* 화면에는 보이지 않고 화면낭독기만 읽는 글자 (position:absolute라 플렉스 간격·배치에 영향 없음) */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* Tab으로 이동할 때 포커스가 고정 헤더(위, PC 106px·≤950px 89px)나 문의하기 버튼(아래, 72px·≤600px 69px)에 가려지지 않도록 스크롤 여백 확보 */
+html{scroll-padding:122px 0 88px}
+@media(max-width:950px){html{scroll-padding-top:105px}}
+@media(max-width:600px){html{scroll-padding-bottom:calc(85px + env(safe-area-inset-bottom))}}
+/* 페이지 이동 후 포커스를 받는 제목(app.js render): 누르는 요소가 아니므로 테두리 표시 안 함 */
+#main h1[tabindex="-1"]:focus{outline:none}
+/* 현재 메뉴: 금색 외에 밑줄로도 구분. ⌄ 기호에는 밑줄이 붙지 않도록 inline-block */
+.nav-item>button.active{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.nav-item>button.active span{display:inline-block}
+/* 검색창·국가 선택 테두리: 흰 배경 대비 3.17:1 (--muted 계열) */
+.filter-bar select,.filter-bar input{border-color:#87929c}
+/* PC 작은 클릭 영역: 안쪽 여백을 늘리고 같은 크기의 음수 바깥 여백으로 상쇄 → 보이는 모양·배치는 그대로, 누를 수 있는 영역만 확대
+   (≤950px은 6번 규칙이 이미 44px 확보). 참고 사이트 링크는 줄 간격(28.5px)보다 키우면 서로 겹치므로 inline-block으로 줄 높이만큼만 */
+@media(min-width:951px){
+  .crumb a{display:inline-block;padding:16px 6px;margin:-16px -6px}
+  .footer-about{display:inline-block;padding:16px 0;margin:-16px 0}
+  .footer-bottom button{padding-block:16px;margin-block:-15px}
+  .story-links a{padding-block:15px;margin-block:-15px}
+  .more{padding-top:21px;margin-top:-21px}
+  .article .back{padding-top:20px;margin-top:15px}
+  .about-block p a{display:inline-block}
 }

@@ -573,6 +573,7 @@ window.KOPORA_SAMPLES = [
     "media": "assets/cinema-1.mp4",
     "mediaType": "video",
     "poster": "assets/thumb-cinema-1.webp",
+    "description": "어두운 남색 배경 앞에 눈을 반쯤 뜬 사람의 옆얼굴이 있고, 머리 뒤쪽으로 푸른빛과 금빛의 가는 선과 점이 신경망처럼 퍼져 있습니다. 화면이 어둠 속에서 밝아진 뒤 천천히 움직이다가 다시 어두워집니다. 소리와 글자는 없습니다.",
     "duration": "12초"
   },
   {
@@ -590,6 +591,7 @@ window.KOPORA_SAMPLES = [
     "media": "assets/cinema-2.mp4",
     "mediaType": "video",
     "poster": "assets/thumb-cinema-2.webp",
+    "description": "해 질 녘 구름 사이로 해가 비치는 도시 풍경입니다. 고층 빌딩과 전통 기와지붕 건물, 산 위의 탑, 아치형 다리가 보이고, 물기 있는 광장 바닥에 노을빛과 걷거나 서 있는 사람들의 실루엣이 비칩니다. 화면이 어둠 속에서 밝아진 뒤 천천히 움직이다가 다시 어두워집니다. 소리와 글자는 없습니다.",
     "duration": "12초"
   },
   {
@@ -607,6 +609,7 @@ window.KOPORA_SAMPLES = [
     "media": "assets/cinema-3.mp4",
     "mediaType": "video",
     "poster": "assets/thumb-cinema-3.webp",
+    "description": "해 질 녘 초원 위 하늘에 눈을 감은 투명한 유리 얼굴이 떠 있고, 얼굴 안에 뾰족한 건물들이 비쳐 보입니다. 아래 물웅덩이에 얼굴과 구름이 반사됩니다. 화면이 어둠 속에서 밝아진 뒤 천천히 움직이다가 다시 어두워집니다. 소리와 글자는 없습니다.",
     "duration": "12초"
   },
   {
@@ -624,6 +627,7 @@ window.KOPORA_SAMPLES = [
     "media": "assets/motion-1.mp4",
     "mediaType": "video",
     "poster": "assets/thumb-motion-1.webp",
+    "description": "어두운 남색 배경 앞에 눈을 반쯤 뜬 사람의 옆얼굴이 있고, 머리 뒤쪽으로 푸른빛과 금빛의 가는 선과 점이 신경망처럼 퍼져 있습니다. 화면이 어둠 속에서 밝아진 뒤 천천히 움직이다가 다시 어두워집니다. 소리와 글자는 없습니다.",
     "duration": "12초"
   },
   {
@@ -641,6 +645,7 @@ window.KOPORA_SAMPLES = [
     "media": "assets/motion-2.mp4",
     "mediaType": "video",
     "poster": "assets/thumb-motion-2.webp",
+    "description": "해 질 녘 구름 사이로 해가 비치는 도시 풍경입니다. 고층 빌딩과 전통 기와지붕 건물, 산 위의 탑, 아치형 다리가 보이고, 물기 있는 광장 바닥에 노을빛과 걷거나 서 있는 사람들의 실루엣이 비칩니다. 화면이 어둠 속에서 밝아진 뒤 천천히 움직이다가 다시 어두워집니다. 소리와 글자는 없습니다.",
     "duration": "12초"
   },
   {
@@ -658,6 +663,7 @@ window.KOPORA_SAMPLES = [
     "media": "assets/motion-3.mp4",
     "mediaType": "video",
     "poster": "assets/thumb-motion-3.webp",
+    "description": "해 질 녘 초원 위 하늘에 눈을 감은 투명한 유리 얼굴이 떠 있고, 얼굴 안에 뾰족한 건물들이 비쳐 보입니다. 아래 물웅덩이에 얼굴과 구름이 반사됩니다. 화면이 어둠 속에서 밝아진 뒤 천천히 움직이다가 다시 어두워집니다. 소리와 글자는 없습니다.",
     "duration": "12초"
   },
   {
@@ -726,6 +732,7 @@ window.KOPORA_SAMPLES = [
     "media": "assets/hero.webp",
     "mediaType": "image",
     "poster": "assets/thumb-image-1.webp",
+    "description": "어두운 남색 배경 앞에 눈을 반쯤 뜬 사람의 옆얼굴이 있고, 머리 뒤쪽으로 푸른빛과 금빛의 가는 선과 점이 신경망처럼 퍼져 있습니다.",
     "duration": "1점"
   },
   {
@@ -743,6 +750,7 @@ window.KOPORA_SAMPLES = [
     "media": "assets/city.webp",
     "mediaType": "image",
     "poster": "assets/thumb-image-2.webp",
+    "description": "해 질 녘 구름 사이로 해가 비치는 도시 풍경입니다. 고층 빌딩과 전통 기와지붕 건물, 산 위의 탑, 아치형 다리가 보이고, 물기 있는 광장 바닥에 노을빛과 걷거나 서 있는 사람들의 실루엣이 비칩니다.",
     "duration": "1점"
   },
   {
@@ -760,6 +768,7 @@ window.KOPORA_SAMPLES = [
     "media": "assets/mask.webp",
     "mediaType": "image",
     "poster": "assets/thumb-image-3.webp",
+    "description": "해 질 녘 초원 위 하늘에 눈을 감은 투명한 유리 얼굴이 떠 있고, 얼굴 안에 뾰족한 건물들이 비쳐 보입니다. 아래 물웅덩이에 얼굴과 구름이 반사됩니다.",
     "duration": "1점"
   }
 ];
