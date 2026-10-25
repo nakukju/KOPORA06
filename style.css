@@ -247,6 +247,11 @@ html{scroll-padding:122px 0 88px}
 /* 현재 메뉴: 금색 외에 밑줄로도 구분. ⌄ 기호에는 밑줄이 붙지 않도록 inline-block */
 .nav-item>button.active{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
 .nav-item>button.active span{display:inline-block}
+/* 펼친 메뉴(.open, aria-expanded=true)도 누르는 즉시 같은 골드·밑줄로 표시. 펼친 동안에는 펼친 메뉴만 표시하고,
+   닫히면 현재 페이지 메뉴(.active, aria-current)로 돌아감 — 현재 페이지 표시는 app.js render()만 바꿈 */
+.nav-item.open>button{color:var(--gold-deep);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.nav-item.open>button span{display:inline-block}
+#nav:has(.nav-item.open) .nav-item:not(.open)>button.active{color:var(--navy);text-decoration:none}
 /* 검색창·국가 선택 테두리: 흰 배경 대비 3.17:1 (--muted 계열) */
 .filter-bar select,.filter-bar input{border-color:#87929c}
 /* PC 작은 클릭 영역: 안쪽 여백을 늘리고 같은 크기의 음수 바깥 여백으로 상쇄 → 보이는 모양·배치는 그대로, 누를 수 있는 영역만 확대
