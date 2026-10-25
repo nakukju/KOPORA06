@@ -8,7 +8,7 @@
 /* =====================================================================
    KOPORA 추가 스타일 — 위의 기본 스타일(1~6줄) 뒤에 적용됩니다.
    순서: 1 토큰 → 2 카드 → 3 섹션·배경 → 4 글자 대비 → 5 마이크로 인터랙션
-         → 6 태블릿(≤950px) → 7 모바일(≤600px, 375px 기준) → 8 동작 줄이기 → 9 접근성 보완 → 10 가독성 1차 개선
+         → 6 태블릿(≤950px) → 7 모바일(≤600px, 375px 기준) → 8 동작 줄이기 → 9 접근성 보완 → 10 가독성 1차 개선 → 11 가독성 2차 개선
    반응형 규칙은 기본 스타일의 같은 미디어 쿼리보다 뒤에 있어야 하므로 이 순서를 유지하세요.
    ===================================================================== */
 
@@ -276,3 +276,47 @@ html{scroll-padding:122px 0 88px}
 .list-card .tag,.list-card .card-foot{font-size:12px}
 /* 연구소 소개 참고 사이트: 본문과 같은 색이라 밑줄로 링크임을 구분 (WCAG 1.4.1) */
 .about-block p a{text-decoration:underline;text-underline-offset:3px}
+
+/* 11. 가독성 2차 개선 — 읽기 어려운 작은 글자만 키움. 글자 크기(와 메뉴 구간 나눔)만 바꾸고 색·글꼴·굵기·배치·줄 간격 비율은 그대로
+   메인 큰 제목(.hero h1)·로고·제목류는 제외. 모바일(≤600px)은 7번 규칙에서 이미 키운 값이 있어 PC·태블릿(≥601px) 위주로 적용 */
+/* 모든 화면: 7번 모바일 규칙에서도 작게 남아 있던 보조 라벨·번호 */
+.eyebrow,.pick-label,.steps-toc-label,.quick .rec{font-size:12px}
+.step-num,.result-count,.step-links small{font-size:13px}
+.article .note,.more,.article .back{font-size:14px}
+@media(min-width:601px){
+  /* 상단 띠·히어로 하단 띠(영문 장식) */
+  .topline{font-size:12px}
+  .topline span,.hero-bottom{font-size:11px}
+  /* 버튼: 모양(높이·여백·테두리)은 그대로, 글자만 */
+  .button,.contact-bar .button{font-size:15px}
+  .pick-btn{font-size:14px}
+  .pick-intro{font-size:16px}
+  /* 영문 장식 문구·보조 라벨: 위계를 위해 본문보다 작게 12px */
+  .kicker,.story-panel .tag,.gallery-card small,.entry small,.screen-label,.dialog-eyebrow,.footer-about,.footer-bottom,.footer-bottom button{font-size:12px}
+  .demo{font-size:11px}
+  /* 홈 섹션 설명문·링크 */
+  .story-links{font-size:14px}
+  .story-panel>p{font-size:16px}
+  .gallery-card p{font-size:14px}
+  .entry h3{font-size:18px}
+  .entry>p,.institute-band p{font-size:15px}
+  .footer-top p{font-size:14px}
+  /* 목록·상세·소개 */
+  .crumb{font-size:13px}
+  .tabs a{font-size:14px}
+  .filter-bar select,.filter-bar input{font-size:15px}
+  .list-card p{font-size:15px}
+  .step-body>p,.step-links a,.about-block p,.soon p{font-size:16px}
+  .step-more,.step-nav a,.source-panel p,.signature,dialog p{font-size:15px}
+}
+/* ≥951px: 퀵메뉴, 상단 가로 메뉴(1151px 이상 15px, 951~1150px는 로고와 겹치지 않도록 14px — 951px에서 로고와 45px 간격) */
+@media(min-width:951px){
+  /* 퀵메뉴(3열): 601~950px에서는 칸이 좁아 키우면 단어 중간 줄바꿈이 늘어 기존 크기 유지 */
+  .quick strong{font-size:16px}
+  .quick small{font-size:13px}
+  .nav-item>button{font-size:15px}
+  .nav-item>button span{font-size:10px}
+  .drop a{font-size:15px}
+  .drop strong{font-size:12px}
+}
+@media(min-width:951px) and (max-width:1150px){.nav-item>button{font-size:14px}}
