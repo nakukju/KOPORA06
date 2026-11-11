@@ -357,3 +357,20 @@ body{line-height:var(--lh-body)}
 
 /* 연구소 소개 참고 사이트: 본문과 같은 색이라 밑줄로 링크임을 구분 (WCAG 1.4.1) */
 .about-block p a{text-decoration:underline;text-underline-offset:3px}
+
+/* 11. 홈 '관심 분야' 추천 6개 항목 — 독립된 카드형 박스
+   이 블록(11번)만 지우면 이전 디자인(구분선으로 나눈 칸)으로 그대로 돌아갑니다. 다른 카드 영역에는 영향 없음(.quick-grid 안의 링크에만 적용)
+   선택자 우선순위: 5-1번의 .quick a:nth-child(…)·7번의 .quick a:first-child와 같은 (0,2,1)이고 파일 뒤쪽이라 그 구분선·여백 규칙을 덮음
+   배치: PC(≥951px) 3열×2행, 태블릿(601~950px) 2열×3행, 모바일(≤600px) 1열. 같은 행 카드는 그리드 기본값(stretch)으로 높이가 같음 */
+.quick-grid{gap:20px;padding-top:22px;padding-bottom:36px}
+.quick .quick-grid>a{border:1px solid #e3e8ed;border-radius:8px;background:#fff;padding:22px 22px 22px 24px;
+  box-shadow:0 1px 2px #001f3f0a,0 4px 14px #001f3f0d;transition:box-shadow .2s ease}
+/* 마우스·키보드: 그림자만 조금 진하게(기울기·회전·확대 없음). 포커스 테두리는 기존 진한 골드 3px 그대로 */
+@media(hover:hover){.quick .quick-grid>a:hover{box-shadow:0 2px 4px #001f3f12,0 10px 24px #001f3f1c}}
+.quick .quick-grid>a:focus-visible{box-shadow:0 2px 4px #001f3f12,0 10px 24px #001f3f1c}
+@media(min-width:601px) and (max-width:950px){.quick-grid{grid-template-columns:repeat(2,1fr);gap:16px}}
+@media(max-width:600px){
+  .quick-grid{gap:12px;padding-top:18px;padding-bottom:28px}
+  .quick .quick-grid>a{padding:16px 16px 16px 18px}
+}
+@media(prefers-reduced-motion:reduce){.quick .quick-grid>a{transition:none}}
