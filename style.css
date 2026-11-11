@@ -374,3 +374,25 @@ body{line-height:var(--lh-body)}
   .quick .quick-grid>a{padding:16px 16px 16px 18px}
 }
 @media(prefers-reduced-motion:reduce){.quick .quick-grid>a{transition:none}}
+
+/* 12. 홈 '함께 생각하는 권리 이야기' 두 카드(.story-panel) — 11번 카드와 같은 모서리·그림자, 하단 링크는 알약형 버튼
+   이 블록(12번)만 지우면 이전 디자인(각진 테두리 + 텍스트 링크)으로 그대로 돌아갑니다. HTML·링크 동작은 그대로(CSS 모양만 바꿈)
+   선택자 우선순위: .story-panel .story-links a (0,2,1)가 6·9번의 .story-links a (0,1,1) 높이·여백 규칙을 덮음 */
+.story-panel{border-color:#e3e8ed;border-radius:8px;background:#fff;box-shadow:0 1px 2px #001f3f0a,0 4px 14px #001f3f0d}
+.story-panel .story-links{flex-wrap:wrap;gap:12px}
+/* 알약형 버튼: 높이 48px(원형 34px + 위아래 6px + 테두리). 좁으면 한 줄에 하나씩 꽉 차게
+   글자는 버튼 전체 너비의 정중앙: 원형 화살표를 흐름에서 빼 오른쪽 끝에 고정하고, 좌우 여백을 같게(52px = 원 34px + 오른쪽 6px + 간격 12px) */
+.story-panel .story-links a{position:relative;flex:1 1 150px;align-items:center;justify-content:center;text-align:center;min-height:48px;margin:0;padding:6px 52px;
+  border:1px solid #001f3f2e;border-radius:9999px;background:#f7f9fb;color:var(--navy);
+  transition:background-color .2s ease,border-color .2s ease}
+/* ↗ 글자는 글꼴 안에서 위로 2px·왼쪽으로 0.4px 치우쳐 그려지므로, 원 안 여백(위 4px·왼쪽 1px)으로 잉크 중심을 원 중심에 맞춤 */
+.story-panel .story-links a>span{position:absolute;inset-block:0;right:6px;margin-block:auto;display:grid;place-items:center;width:34px;height:34px;padding:4px 0 0 1px;border:1px solid #001f3f4d;border-radius:50%;
+  background:#fff;font-size:15px;line-height:1;transition:background-color .2s ease,border-color .2s ease,color .2s ease}
+/* 마우스·키보드: 테두리는 진한 골드, 배경은 옅은 골드, 원형은 상단 카드 화살표처럼 네이비로 채움. 포커스 테두리는 기존 진한 골드 3px 그대로 */
+@media(hover:hover){
+  .story-panel .story-links a:hover{border-color:var(--gold-deep);background:#fbf7e9}
+  .story-panel .story-links a:hover>span{background:var(--navy);border-color:var(--navy);color:#fff}
+}
+.story-panel .story-links a:focus-visible{border-color:var(--gold-deep);background:#fbf7e9}
+.story-panel .story-links a:focus-visible>span{background:var(--navy);border-color:var(--navy);color:#fff}
+@media(prefers-reduced-motion:reduce){.story-panel .story-links a,.story-panel .story-links a>span{transition:none}}
