@@ -422,3 +422,30 @@ body{line-height:var(--lh-body)}
 /* 버튼(.button) 안: 버튼의 기존 글자-화살표 간격(gap: PC 24px·모바일 10px)을 그대로 쓰므로 왼쪽 여백 0. 세로 가운데는 .button의 align-items:center */
 .button>.k-arrow{margin-left:0}
 .k-arrow::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3.8' stroke-linejoin='round'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3.8' stroke-linejoin='round'/%3E%3C/svg%3E")}
+/* 14. 보조 내비게이션 — 선형 원형 화살표(.o-arrow). 13번 .k-arrow(네이비·골드, 주요 이동)와 분리된 별도 규칙
+   대상: 홈 자료마당·칼럼 목록 제목 5개(.entry, app.js의 ARW_LINE)·푸터 CONTACT US(index.html). 외부 링크의 ↗는 유지
+   모양: 채우기 없는 원(선 1.5px) + 수평 선형 화살표(선 1.6px, 끝 둥글게) — SVG 마스크, 색은 currentColor
+   중심: viewBox 26 기준 원 (13,13)·화살표 가로 8~18·세로 9~17 → 가로·세로 정중앙. 기본 24px, 1:1 고정(flex:none) */
+:root{--o-ink:#1f2a36}
+.o-arrow{position:relative;display:inline-grid;flex:none;width:24px;height:24px;border-radius:50%;color:var(--o-ink);transition:color .2s ease,background-color .2s ease}
+.o-arrow::before{content:'';position:absolute;inset:0;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Ccircle cx='13' cy='13' r='12.25' fill='none' stroke='%23000' stroke-width='1.5'/%3E%3Cpath d='M8 13h10M14 9l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Ccircle cx='13' cy='13' r='12.25' fill='none' stroke='%23000' stroke-width='1.5'/%3E%3Cpath d='M8 13h10M14 9l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+/* 14-1. 목록 제목(.entry): 행 전체가 링크이므로 박스 없이 기존 구분선 목록 유지. 원은 오른쪽 끝·행 세로 가운데,
+   글자와 겹치지 않도록 오른쪽 36px(원 24px + 간격 12px) 확보. 호버·포커스는 원이 네이비로 채워지고 선이 골드(13번과 같은 언어) */
+.entry:has(>.o-arrow){position:relative;padding-right:36px}
+.entry>.o-arrow{position:absolute;right:0;top:50%;margin-top:-12px}
+@media(hover:hover){.entry:hover>.o-arrow{background:var(--navy);color:var(--arrow-gold)}}
+.entry:focus-visible>.o-arrow{background:var(--navy);color:var(--arrow-gold)}
+/* 14-2. 푸터 CONTACT US(어두운 배경): 투명 박스 + 골드 1px·반경 8px + 골드 원형 화살표. 글자 색·크기·자간은 기존 그대로
+   호버·포커스: 박스 크기·위치 그대로, 옅은 골드 바탕(12%)과 밝은 골드만 */
+.footer-about:has(>.o-arrow){display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:0 10px 0 14px;margin:0;border:1px solid var(--arrow-gold);border-radius:8px;transition:background-color .2s ease,border-color .2s ease}
+.footer-about>.o-arrow{color:var(--arrow-gold)}
+@media(hover:hover){.footer-about:has(>.o-arrow):hover{background:#d8b76d1f;border-color:var(--arrow-gold-hover)}.footer-about:has(>.o-arrow):hover>.o-arrow{color:var(--arrow-gold-hover)}}
+.footer-about:has(>.o-arrow):focus-visible{background:#d8b76d1f;border-color:var(--arrow-gold-hover)}
+.footer-about:has(>.o-arrow):focus-visible>.o-arrow{color:var(--arrow-gold-hover)}
+/* 태블릿(601~950px): 박스가 글자 링크보다 넓어 790~820px에서 새로 줄바꿈되던 문제 → 푸터 윗줄 요소의 가로 간격만 40px→18px(줄바꿈 시 위아래 간격 40px는 그대로)
+   (한 줄 배치 기준 폭이 기존과 같은 약 790px. 그보다 좁으면 기존처럼 CONTACT US가 둘째 줄로) */
+@media(min-width:601px) and (max-width:950px){.footer-top{column-gap:18px}}
+@media(prefers-reduced-motion:reduce){.o-arrow,.footer-about{transition:none}}
+@media(forced-colors:active){.o-arrow::before{forced-color-adjust:none;background:CanvasText}}
