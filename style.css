@@ -393,18 +393,27 @@ body{line-height:var(--lh-body)}
 @media(prefers-reduced-motion:reduce){.story-panel .story-links a{transition:none}}
 
 /* 13. 원형 화살표 아이콘 공통 — C. 골드 강조형(딥 네이비 원 + 골드 테두리 + 속이 빈 골드 윤곽선 오른쪽 화살표)
-   대상: 홈 01~06 바로가기(.quick .arrow 40px)·이야기 카드 알약 버튼(.story-links a>span 34px). 크기·위치는 위 각 규칙이 정함
+   대상: 홈 01~06 바로가기(.quick .arrow 40px)·이야기 카드 알약 버튼(.story-links a>span 34px)·콘텐츠 이동 링크(.k-arrow 24px, app.js의 ARW). 크기·위치는 각 규칙이 정함
    화살표: HTML의 ↗ 글자는 그대로 두고(aria-hidden) 크기 0으로 숨긴 뒤, ::before에 SVG 마스크로 그림 → 색은 currentColor(골드 토큰)
    마스크 viewBox 5 5 70 70 = 기준 SVG의 원(r35)을 아이콘 바깥 테두리에 맞춘 범위 → 원과 화살표 비율이 기준 SVG와 같음
    선 두께: 기준 SVG를 그대로 줄이면 40px에서 1.2px·34px에서 1px로 흐려지므로 3(70 기준) → 40px 1.7px·34px 1.5px. 원 테두리는 1px
    호버(마우스 기기만)·키보드 포커스: 네이비·골드 명도만 조금 밝게, 0.2초 색 전환(이동·확대·회전 없음) */
-.quick .arrow,.story-panel .story-links a>span{display:grid;place-items:center;padding:0;border:1px solid var(--arrow-gold);border-radius:50%;
+.quick .arrow,.story-panel .story-links a>span,.k-arrow{display:grid;place-items:center;padding:0;border:1px solid var(--arrow-gold);border-radius:50%;
   background:var(--arrow-bg);color:var(--arrow-gold);font-size:0;line-height:0;transition:background-color .2s ease,border-color .2s ease,color .2s ease}
-.quick .arrow::before,.story-panel .story-links a>span::before{content:'';position:absolute;inset:-1px;background:currentColor;
+.quick .arrow::before,.story-panel .story-links a>span::before,.k-arrow::before{content:'';position:absolute;inset:-1px;background:currentColor;
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;
   mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% 100% no-repeat}
-@media(hover:hover){.quick a:hover .arrow,.story-panel .story-links a:hover>span{background:var(--arrow-bg-hover);border-color:var(--arrow-gold-hover);color:var(--arrow-gold-hover)}}
-.quick a:focus-visible .arrow,.story-panel .story-links a:focus-visible>span{background:var(--arrow-bg-hover);border-color:var(--arrow-gold-hover);color:var(--arrow-gold-hover)}
-@media(prefers-reduced-motion:reduce){.quick .arrow,.story-panel .story-links a>span{transition:none}}
+@media(hover:hover){.quick a:hover .arrow,.story-panel .story-links a:hover>span,a:hover>.k-arrow{background:var(--arrow-bg-hover);border-color:var(--arrow-gold-hover);color:var(--arrow-gold-hover)}}
+.quick a:focus-visible .arrow,.story-panel .story-links a:focus-visible>span,a:focus-visible>.k-arrow{background:var(--arrow-bg-hover);border-color:var(--arrow-gold-hover);color:var(--arrow-gold-hover)}
+@media(prefers-reduced-motion:reduce){.quick .arrow,.story-panel .story-links a>span,.k-arrow{transition:none}}
 /* 고대비 모드: 강제 배경색에 화살표가 묻히지 않도록 시스템 글자색으로 그림 */
-@media(forced-colors:active){.quick .arrow::before,.story-panel .story-links a>span::before{forced-color-adjust:none;background:CanvasText}}
+@media(forced-colors:active){.quick .arrow::before,.story-panel .story-links a>span::before,.k-arrow::before{forced-color-adjust:none;background:CanvasText}}
+/* 13-1. 콘텐츠 이동 링크용 24px(.k-arrow): 홈 '전체 보기'·'둘러보기'(.more)·4단계 '판례 더 보기'(.step-more)
+   글자 뒤 8px 간격·세로 가운데. 원(24px)이 글자 줄 높이(약 22~23px)보다 커서 위아래 -2px로 상쇄 → 링크 높이·밑줄 위치 그대로
+   작은 원에서 선이 흐려지지 않도록 화살표 선만 3.8(70 기준, 약 1.3px)로 굵게. 원 테두리 1px·색·호버는 13번 공통 그대로 */
+/* 화살표가 붙은 링크는 한 줄 유지: 폭이 좁을 때 '전체 보|기'처럼 글자가 끊기지 않도록(링크 대신 옆 제목이 줄바꿈) */
+.more:has(>.k-arrow),.step-more:has(>.k-arrow){flex-shrink:0;white-space:nowrap}
+.k-arrow{position:relative;display:inline-grid;flex:none;width:24px;height:24px;margin:-2px 0 -2px 8px;vertical-align:middle}
+/* .more는 글자 기준선 정렬이라 원이 한글 글자 중심보다 약 1.5px 아래 → 위치만 1.5px 올림(레이아웃 영향 없음). .step-more는 이미 중앙(0.3~0.5px) */
+.more>.k-arrow{top:-1.5px}
+.k-arrow::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3.8' stroke-linejoin='round'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3.8' stroke-linejoin='round'/%3E%3C/svg%3E")}
