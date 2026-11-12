@@ -419,4 +419,6 @@ body{line-height:var(--lh-body)}
 /* 목록 카드 하단 '자세히 보기'(app.js card()): 글자와 원을 세로 가운데로 맞추고 한 줄 유지. 원은 위아래 -2px라 줄 높이(15px×1.5=22.5px)·카드 높이 그대로
    호버·포커스는 카드 전체(a.list-card)에 반응 — 위 13번 공통 a:hover .k-arrow */
 .card-foot>span:has(>.k-arrow){display:inline-flex;align-items:center;white-space:nowrap}
+/* 버튼(.button) 안: 버튼의 기존 글자-화살표 간격(gap: PC 24px·모바일 10px)을 그대로 쓰므로 왼쪽 여백 0. 세로 가운데는 .button의 align-items:center */
+.button>.k-arrow{margin-left:0}
 .k-arrow::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3.8' stroke-linejoin='round'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3.8' stroke-linejoin='round'/%3E%3C/svg%3E")}
