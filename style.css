@@ -28,7 +28,9 @@
   --gallery-shadow:0 2px 4px #00000040,0 10px 20px #00000038,0 24px 48px #00000048;
   --gallery-shadow-hover:0 4px 8px #00000048,0 16px 30px #00000040,0 34px 64px #00000058;
   /* 추후 모바일 하단 고정 버튼을 추가할 때 버튼 높이만큼 값을 지정하면 본문이 가려지지 않습니다. */
-  --fixed-cta-space:0px}
+  --fixed-cta-space:0px;
+  /* 원형 화살표 아이콘(13번 규칙, C. 골드 강조형): 딥 네이비 원 + 골드 테두리·윤곽선 화살표. 골드/네이비 대비 기본 7.2:1, 호버 7.4:1 */
+  --arrow-bg:#102d50;--arrow-gold:#d8b76d;--arrow-bg-hover:#16395f;--arrow-gold-hover:#e6ca8a}
 
 /* 2. 카드 — 테두리 없이 겹 그림자·둥근 모서리, 기울기·겹침 없음 */
 .list-card{border:0;border-radius:14px;background:#fff;box-shadow:var(--card-shadow);padding:32px}
@@ -109,10 +111,8 @@
 .pick-btn:active{transform:scale(.97)}
 .pick-intro{flex-basis:100%;margin:8px 0 0;font-size:18px;line-height:var(--lh-body);color:var(--ink)}
 .quick .rec{display:inline-block;margin-left:8px;padding:1px 7px;background:var(--gold-sub);box-shadow:inset 0 0 0 1px var(--gold-line);color:var(--navy);font-size:14px;font-weight:700;letter-spacing:.02em;line-height:var(--lh-label);vertical-align:2px}
-/* 퀵메뉴 화살표: 지름 40px 원형 아웃라인(장식, 클릭 영역은 카드 전체). 카드 높이가 늘지 않도록 위아래 -2px */
-.quick .arrow{flex:none;display:grid;place-items:center;width:40px;height:40px;margin-block:-2px;border:1px solid #001f3f4d;border-radius:50%;color:var(--navy);font-size:16px;line-height:1;transition:background-color .2s ease,color .2s ease,border-color .2s ease}
-.quick a:focus-visible .arrow{background:var(--navy);border-color:var(--navy);color:#fff}
-@media(hover:hover){.quick a:hover .arrow{background:var(--navy);border-color:var(--navy);color:#fff}}
+/* 퀵메뉴 화살표: 지름 40px 원형(장식, 클릭 영역은 카드 전체). 카드 높이가 늘지 않도록 위아래 -2px. 색·화살표 모양·호버는 13번 공통 규칙 */
+.quick .arrow{position:relative;flex:none;width:40px;height:40px;margin-block:-2px}
 @media(min-width:601px){
   .quick-grid{grid-template-columns:repeat(3,1fr)}
   .quick a,.quick a:first-child{padding:26px 20px;border-right:1px solid var(--line);border-bottom:0}
@@ -385,14 +385,26 @@ body{line-height:var(--lh-body)}
 .story-panel .story-links a{position:relative;flex:1 1 150px;align-items:center;justify-content:center;text-align:center;min-height:48px;margin:0;padding:6px 52px;
   border:1px solid #001f3f2e;border-radius:9999px;background:#f7f9fb;color:var(--navy);
   transition:background-color .2s ease,border-color .2s ease}
-/* ↗ 글자는 글꼴 안에서 위로 2px·왼쪽으로 0.4px 치우쳐 그려지므로, 원 안 여백(위 4px·왼쪽 1px)으로 잉크 중심을 원 중심에 맞춤 */
-.story-panel .story-links a>span{position:absolute;inset-block:0;right:6px;margin-block:auto;display:grid;place-items:center;width:34px;height:34px;padding:4px 0 0 1px;border:1px solid #001f3f4d;border-radius:50%;
-  background:#fff;font-size:15px;line-height:1;transition:background-color .2s ease,border-color .2s ease,color .2s ease}
-/* 마우스·키보드: 테두리는 진한 골드, 배경은 옅은 골드, 원형은 상단 카드 화살표처럼 네이비로 채움. 포커스 테두리는 기존 진한 골드 3px 그대로 */
-@media(hover:hover){
-  .story-panel .story-links a:hover{border-color:var(--gold-deep);background:#fbf7e9}
-  .story-panel .story-links a:hover>span{background:var(--navy);border-color:var(--navy);color:#fff}
-}
+/* 원형 화살표 34px: 오른쪽 끝 고정·세로 가운데. 색·화살표 모양·호버는 13번 공통 규칙 */
+.story-panel .story-links a>span{position:absolute;inset-block:0;right:6px;margin-block:auto;width:34px;height:34px}
+/* 마우스·키보드: 버튼 테두리는 진한 골드, 배경은 옅은 골드. 포커스 테두리는 기존 진한 골드 3px 그대로 */
+@media(hover:hover){.story-panel .story-links a:hover{border-color:var(--gold-deep);background:#fbf7e9}}
 .story-panel .story-links a:focus-visible{border-color:var(--gold-deep);background:#fbf7e9}
-.story-panel .story-links a:focus-visible>span{background:var(--navy);border-color:var(--navy);color:#fff}
-@media(prefers-reduced-motion:reduce){.story-panel .story-links a,.story-panel .story-links a>span{transition:none}}
+@media(prefers-reduced-motion:reduce){.story-panel .story-links a{transition:none}}
+
+/* 13. 원형 화살표 아이콘 공통 — C. 골드 강조형(딥 네이비 원 + 골드 테두리 + 속이 빈 골드 윤곽선 오른쪽 화살표)
+   대상: 홈 01~06 바로가기(.quick .arrow 40px)·이야기 카드 알약 버튼(.story-links a>span 34px). 크기·위치는 위 각 규칙이 정함
+   화살표: HTML의 ↗ 글자는 그대로 두고(aria-hidden) 크기 0으로 숨긴 뒤, ::before에 SVG 마스크로 그림 → 색은 currentColor(골드 토큰)
+   마스크 viewBox 5 5 70 70 = 기준 SVG의 원(r35)을 아이콘 바깥 테두리에 맞춘 범위 → 원과 화살표 비율이 기준 SVG와 같음
+   선 두께: 기준 SVG를 그대로 줄이면 40px에서 1.2px·34px에서 1px로 흐려지므로 3(70 기준) → 40px 1.7px·34px 1.5px. 원 테두리는 1px
+   호버(마우스 기기만)·키보드 포커스: 네이비·골드 명도만 조금 밝게, 0.2초 색 전환(이동·확대·회전 없음) */
+.quick .arrow,.story-panel .story-links a>span{display:grid;place-items:center;padding:0;border:1px solid var(--arrow-gold);border-radius:50%;
+  background:var(--arrow-bg);color:var(--arrow-gold);font-size:0;line-height:0;transition:background-color .2s ease,border-color .2s ease,color .2s ease}
+.quick .arrow::before,.story-panel .story-links a>span::before{content:'';position:absolute;inset:-1px;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+@media(hover:hover){.quick a:hover .arrow,.story-panel .story-links a:hover>span{background:var(--arrow-bg-hover);border-color:var(--arrow-gold-hover);color:var(--arrow-gold-hover)}}
+.quick a:focus-visible .arrow,.story-panel .story-links a:focus-visible>span{background:var(--arrow-bg-hover);border-color:var(--arrow-gold-hover);color:var(--arrow-gold-hover)}
+@media(prefers-reduced-motion:reduce){.quick .arrow,.story-panel .story-links a>span{transition:none}}
+/* 고대비 모드: 강제 배경색에 화살표가 묻히지 않도록 시스템 글자색으로 그림 */
+@media(forced-colors:active){.quick .arrow::before,.story-panel .story-links a>span::before{forced-color-adjust:none;background:CanvasText}}
