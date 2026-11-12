@@ -403,8 +403,8 @@ body{line-height:var(--lh-body)}
 .quick .arrow::before,.story-panel .story-links a>span::before,.k-arrow::before{content:'';position:absolute;inset:-1px;background:currentColor;
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;
   mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% 100% no-repeat}
-@media(hover:hover){.quick a:hover .arrow,.story-panel .story-links a:hover>span,a:hover>.k-arrow{background:var(--arrow-bg-hover);border-color:var(--arrow-gold-hover);color:var(--arrow-gold-hover)}}
-.quick a:focus-visible .arrow,.story-panel .story-links a:focus-visible>span,a:focus-visible>.k-arrow{background:var(--arrow-bg-hover);border-color:var(--arrow-gold-hover);color:var(--arrow-gold-hover)}
+@media(hover:hover){.quick a:hover .arrow,.story-panel .story-links a:hover>span,a:hover .k-arrow{background:var(--arrow-bg-hover);border-color:var(--arrow-gold-hover);color:var(--arrow-gold-hover)}}
+.quick a:focus-visible .arrow,.story-panel .story-links a:focus-visible>span,a:focus-visible .k-arrow{background:var(--arrow-bg-hover);border-color:var(--arrow-gold-hover);color:var(--arrow-gold-hover)}
 @media(prefers-reduced-motion:reduce){.quick .arrow,.story-panel .story-links a>span,.k-arrow{transition:none}}
 /* 고대비 모드: 강제 배경색에 화살표가 묻히지 않도록 시스템 글자색으로 그림 */
 @media(forced-colors:active){.quick .arrow::before,.story-panel .story-links a>span::before,.k-arrow::before{forced-color-adjust:none;background:CanvasText}}
@@ -416,4 +416,7 @@ body{line-height:var(--lh-body)}
 .k-arrow{position:relative;display:inline-grid;flex:none;width:24px;height:24px;margin:-2px 0 -2px 8px;vertical-align:middle}
 /* .more는 글자 기준선 정렬이라 원이 한글 글자 중심보다 약 1.5px 아래 → 위치만 1.5px 올림(레이아웃 영향 없음). .step-more는 이미 중앙(0.3~0.5px) */
 .more>.k-arrow{top:-1.5px}
+/* 목록 카드 하단 '자세히 보기'(app.js card()): 글자와 원을 세로 가운데로 맞추고 한 줄 유지. 원은 위아래 -2px라 줄 높이(15px×1.5=22.5px)·카드 높이 그대로
+   호버·포커스는 카드 전체(a.list-card)에 반응 — 위 13번 공통 a:hover .k-arrow */
+.card-foot>span:has(>.k-arrow){display:inline-flex;align-items:center;white-space:nowrap}
 .k-arrow::before{-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3.8' stroke-linejoin='round'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 70 70'%3E%3Cpath d='M21 32H40V23L60 40L40 57V48H21Z' fill='none' stroke='%23000' stroke-width='3.8' stroke-linejoin='round'/%3E%3C/svg%3E")}
