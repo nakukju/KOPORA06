@@ -111,3 +111,9 @@ function portraitSteps(){/* render()가 파일 앞쪽에서 먼저 실행되므�
 main.addEventListener('click',e=>{const a=e.target.closest('[data-step]');if(!a)return;const t=document.getElementById(a.dataset.step==='toc'?'steps-toc':'step-'+a.dataset.step);if(!t)return;e.preventDefault();
   const top=t.getBoundingClientRect().top+scrollY-document.querySelector('header').offsetHeight-16;
   scrollTo({top,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});t.focus({preventScroll:true})});
+
+/* 헤더 영문 명칭 모션 제어: 버튼 준비 시 반복(.is-loop), 일시정지/재생(키보드 Enter·Space 기본 지원), 동작 줄이기 시 버튼 숨김, 비활성 탭에서 정지 */
+(()=>{const en=document.querySelector('.brand-en-motion'),btn=document.querySelector('.en-motion-toggle');if(!en||!btn)return;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)'),sync=()=>{btn.hidden=reduce.matches};sync();reduce.addEventListener?.('change',sync);en.classList.add('is-loop');
+btn.addEventListener('click',()=>{const p=en.classList.toggle('is-paused'),l=p?'영문 명칭 움직임 다시 재생':'영문 명칭 움직임 일시정지';btn.setAttribute('aria-pressed',String(p));btn.setAttribute('aria-label',l);btn.title=l});
+document.addEventListener('visibilitychange',()=>en.classList.toggle('is-hidden-tab',document.hidden))})();

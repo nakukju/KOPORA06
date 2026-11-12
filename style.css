@@ -449,3 +449,35 @@ body{line-height:var(--lh-body)}
 @media(min-width:601px) and (max-width:950px){.footer-top{column-gap:18px}}
 @media(prefers-reduced-motion:reduce){.o-arrow,.footer-about{transition:none}}
 @media(forced-colors:active){.o-arrow::before{forced-color-adjust:none;background:CanvasText}}
+
+/* =========================================================
+   15. 헤더 영문 명칭 모션 (Korea · Portrait · Rights · Association)
+   - 헤더(.brand-en-motion)에만 적용, 푸터 로고는 정적 유지
+   - 단어별 inline-block + transform·color 만 변경 → 너비·높이·양쪽 정렬 불변
+   - 단어마다 0.9초 X축 360° 회전 + 골드 강조, 0.45초 간격, 첫 시작 2초 후, 14초 주기
+   - 강조 골드 #8f6d22: 흰 배경 명도 대비 4.80:1 (브랜드 골드 #d8b76d는 1.92:1이라 글자색 부적합)
+   - 기본은 1회 재생, JS가 일시정지 버튼을 준비하면 .is-loop 로 반복 (버튼 없는 화면에서는 반복하지 않음)
+   ========================================================= */
+:root{--en-gold:#8f6d22}
+@keyframes en-spin{0%{transform:perspective(700px) rotateX(0deg);animation-timing-function:ease-in-out}6.429%,100%{transform:perspective(700px) rotateX(360deg)}}
+@keyframes en-gold{0%{color:var(--ink);animation-timing-function:ease-out}2.143%{color:var(--en-gold)}7.143%{color:var(--en-gold);animation-timing-function:ease-in-out}11.429%,100%{color:var(--ink)}}
+.brand-en-motion .en-w{display:inline-block;transform-origin:50% 50%;animation-name:en-spin,en-gold;animation-duration:14s;animation-iteration-count:1;animation-delay:2s}
+.brand-en-motion .en-w:nth-child(2){animation-delay:2.45s}
+.brand-en-motion .en-w:nth-child(3){animation-delay:2.9s}
+.brand-en-motion .en-w:nth-child(4){animation-delay:3.35s}
+.brand-en-motion.is-loop .en-w{animation-iteration-count:infinite}
+/* 일시정지: 애니메이션 제거 → 모든 단어 정적 상태로 즉시 복귀 / 비활성 탭: 진행 정지 */
+.brand-en-motion.is-paused .en-w{animation:none}
+.brand-en-motion.is-hidden-tab .en-w{animation-play-state:paused}
+/* 일시정지 버튼: 영문 명칭 줄 오른쪽 24px 원형. 레이아웃 점유 0(너비 24 + 왼쪽 여백 -48 + flex gap 24), 화면에서는 left:30px 로 로고 오른쪽 6px */
+.en-motion-toggle{flex:0 0 auto;align-self:center;position:relative;top:22px;left:30px;width:24px;height:24px;margin:0 auto 0 -48px;padding:0;border:1px solid var(--line);border-radius:50%;background:#fff;color:var(--muted);cursor:pointer;display:grid;place-items:center;transition:border-color .2s ease,color .2s ease}
+.en-motion-toggle[hidden]{display:none}
+.en-motion-toggle::before{content:"";width:8px;height:9px;background:linear-gradient(90deg,currentColor 0 3px,transparent 3px 5px,currentColor 5px)}
+.en-motion-toggle[aria-pressed="true"]::before{margin-left:2px;background:currentColor;clip-path:polygon(0 0,100% 50%,0 100%)}
+@media(hover:hover){.en-motion-toggle:hover{border-color:var(--navy);color:var(--navy)}}
+.en-motion-toggle:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+@media(max-width:1150px){.en-motion-toggle{top:20px}}
+/* 374px 이하: 메뉴(☰)와 간격이 부족해 버튼을 두지 않고 1회만 재생 후 정적 상태 */
+@media(max-width:374px){.brand-en-motion.is-loop .en-w{animation-iteration-count:1}.en-motion-toggle{display:none}}
+@media(prefers-reduced-motion:reduce){.brand-en-motion .en-w{animation:none}.en-motion-toggle{display:none}}
+@media(forced-colors:active){.en-motion-toggle{border-color:ButtonText;color:ButtonText}}
