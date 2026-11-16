@@ -498,3 +498,16 @@ body{line-height:var(--lh-body)}
     filter:drop-shadow(0 1px 0 rgba(0,23,46,.20)) drop-shadow(0 2px 1.5px rgba(0,23,46,.12))}
 }
 @media(forced-colors:active){header .brand-top b{background:none;-webkit-text-fill-color:currentColor;filter:none}}
+
+/* =========================================================
+   17. 자료마당 드롭다운 분류 제목(초상권 · AI생성콘텐츠) — 밝은 네이비·골드 강조 박스
+   - .drop strong 은 분류(groups)가 있는 '자료마당' 메뉴에만 생성되므로 다른 드롭다운에는 영향 없음
+   - 박스: 밝은 블루 그레이 #edf1f5(흰 배경 위) + 왼쪽 3px --gold-line + 반경 5px, 그림자·애니메이션 없음
+     글자 --navy 700(박스 대비 14.59:1), 크기 14px·자간은 기존 그대로. 클릭·호버 효과 없음(링크 아님)
+   - 하위 메뉴(법령·판례·논문): 글꼴·크기·호버·포커스 그대로, 왼쪽 여백만 10px → 22px 로 들여쓰기
+   - 모바일(≤950px)은 드롭다운 바탕이 #f3f6f8 이라 #edf1f5 가 구분되지 않음(1.05:1) → 한 단계 짙은 #e3e9ef
+   ========================================================= */
+.drop strong{margin:0 0 2px;padding:9px 12px;background:#edf1f5;border-left:3px solid var(--gold-line);border-radius:5px;color:var(--navy);font-weight:700}
+.drop a+strong{margin-top:10px}
+.drop strong~a{padding-left:22px}
+@media(max-width:950px){.drop strong{background:#e3e9ef}}
