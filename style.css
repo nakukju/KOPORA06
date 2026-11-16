@@ -511,3 +511,18 @@ body{line-height:var(--lh-body)}
 .drop a+strong{margin-top:10px}
 .drop strong~a{padding-left:22px}
 @media(max-width:950px){.drop strong{background:#e3e9ef}}
+
+/* =========================================================
+   18. 헤더 로고 타이포그래피 — KOPORA 크기·자간, '한국초상권연구소' 두께·하단 정렬 (헤더만, 푸터 로고는 기존 유지)
+   - KOPORA: 글자 크기 +1px(36→37 / ≤1150px 32→33), 자간 -2px → -1px. 글꼴·두께(850)·메탈릭 네이비(16번)는 그대로
+     글자 줄 높이(line-height)는 기존 상자 높이(36px / 32px)로 고정 → 로고 높이·구분선·영문 명칭 위치 불변
+     자간을 1px 넓히면 마지막 글자 뒤 간격도 커지므로 margin-right:-1.8px 로 'KOPORA'↔'한국초상권연구소' 실제 간격(약 9.5px)을 기존과 같게 유지
+   - 한국초상권연구소: 400 → 600(Pretendard SemiBold), 크기·색 그대로. position:relative 로 아래로 이동(≤1150px 6px, ≥1151px 7px)
+     → 글자 하단이 KOPORA 글자 하단과 0.5px 이내로 일치(이동 전 6~6.5px 위, 실측 기준). 레이아웃 상자는 그대로라 헤더 높이·구분선 위치 불변
+   - ≤374px: 로고 폭 224px 안에 여유가 2.5px뿐이라 KOPORA 크기·자간은 기존(32px, -2px) 유지(반응형 예외). 한글 두께·정렬만 적용
+   ========================================================= */
+header .brand-top b{font-size:37px;line-height:36px;letter-spacing:-1px;margin-right:-1.8px}
+@media(max-width:1150px){header .brand-top b{font-size:33px;line-height:32px}}
+@media(max-width:374px){header .brand-top b{font-size:32px;letter-spacing:-2px;margin-right:0}}
+header .brand-top>span{font-weight:600;position:relative;top:6px}
+@media(min-width:1151px){header .brand-top>span{top:7px}}
