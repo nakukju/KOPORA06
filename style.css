@@ -514,15 +514,24 @@ body{line-height:var(--lh-body)}
 
 /* =========================================================
    18. 헤더 로고 타이포그래피 — KOPORA 크기·자간, '한국초상권연구소' 두께·하단 정렬 (헤더만, 푸터 로고는 기존 유지)
-   - KOPORA: 글자 크기 +1px(36→37 / ≤1150px 32→33), 자간 -2px → -1px. 글꼴·두께(850)·메탈릭 네이비(16번)는 그대로
+   - KOPORA: 글자 크기 37px(≤1150px 33px), 자간 3px(-1px에서 +4px — +3·+4·+5px 시안 중 선정). 글꼴·두께(850)·메탈릭 네이비(16번)는 그대로
+     601~1150px 는 로고 폭이 260px로 가장 좁아 +3px(자간 2px) 적용
      글자 줄 높이(line-height)는 기존 상자 높이(36px / 32px)로 고정 → 로고 높이·구분선·영문 명칭 위치 불변
-     자간을 1px 넓히면 마지막 글자 뒤 간격도 커지므로 margin-right:-1.8px 로 'KOPORA'↔'한국초상권연구소' 실제 간격(약 9.5px)을 기존과 같게 유지
+     선정 기준: 'KOPORA'↔'한국초상권연구소' 간격이 아래 영문 명칭의 단어 간격과 가장 가깝게
+     (실측 간격/단어 간격: ≥1151px 22.8/24.1px, 601~1150px 20.8/19.5px, 361~600px 20.8/21.2px)
+   - 좌우 정렬(실제 글자 기준): 왼쪽 = KOPORA의 K · 구분선 왼쪽 끝 · Korea의 K / 오른쪽 = '소' · 구분선 오른쪽 끝 · Association의 n
+     K 글자 앞 여백 1px → margin-left:-1px / 한글 명칭 margin-left:auto 로 오른쪽 끝 정렬(13px '소'는 상자 밖으로 0.75px 나와 margin-right:.75px)
+     영문 명칭 마지막 n 뒤 자간·여백(12px 0.9px, 13px 1.55px)만큼 margin-right 음수 → 애니메이션·주기·버튼은 그대로
    - 한국초상권연구소: 400 → 600(Pretendard SemiBold), 크기·색 그대로. position:relative 로 아래로 이동(≤1150px 6px, ≥1151px 7px)
      → 글자 하단이 KOPORA 글자 하단과 0.5px 이내로 일치(이동 전 6~6.5px 위, 실측 기준). 레이아웃 상자는 그대로라 헤더 높이·구분선 위치 불변
-   - ≤374px: 로고 폭 224px 안에 여유가 2.5px뿐이라 KOPORA 크기·자간은 기존(32px, -2px) 유지(반응형 예외). 한글 두께·정렬만 적용
+   - ≤360px(로고 폭 = 화면 - 96px, 320px에서 224px): KOPORA 32px, 자간은 화면 폭에 비례해 -2px(320px) → 3px(360px)
+     → 320px에서도 간격 약 8.3px 확보, 겹침·잘림 없음. 361px 이상은 로고 폭 265px라 일반 규칙(33px, 3px) 적용
    ========================================================= */
-header .brand-top b{font-size:37px;line-height:36px;letter-spacing:-1px;margin-right:-1.8px}
+header .brand-top b{font-size:37px;line-height:36px;letter-spacing:3px;margin:0 0 0 -1px}
 @media(max-width:1150px){header .brand-top b{font-size:33px;line-height:32px}}
-@media(max-width:374px){header .brand-top b{font-size:32px;letter-spacing:-2px;margin-right:0}}
-header .brand-top>span{font-weight:600;position:relative;top:6px}
-@media(min-width:1151px){header .brand-top>span{top:7px}}
+@media(min-width:601px) and (max-width:1150px){header .brand-top b{letter-spacing:2px}}
+@media(max-width:360px){header .brand-top b{font-size:32px;letter-spacing:clamp(-2px,calc((100vw - 320px)*.125 - 2px),3px)}}
+header .brand-top>span{font-weight:600;position:relative;top:6px;margin-left:auto;margin-right:.75px}
+@media(min-width:1151px){header .brand-top>span{top:7px;margin-right:0}}
+header .brand-en{margin-right:-.9px}
+@media(min-width:1151px){header .brand-en{margin-right:-1.55px}}
