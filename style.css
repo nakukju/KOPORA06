@@ -481,3 +481,18 @@ body{line-height:var(--lh-body)}
 @media(max-width:374px){.brand-en-motion.is-loop .en-w{animation-iteration-count:1}.en-motion-toggle{display:none}}
 @media(prefers-reduced-motion:reduce){.brand-en-motion .en-w{animation:none}.en-motion-toggle{display:none}}
 @media(forced-colors:active){.en-motion-toggle{border-color:ButtonText;color:ButtonText}}
+
+/* =========================================================
+   16. 헤더 KOPORA 로고 — 메탈릭 네이비(블루 스틸), 정적
+   - 헤더 로고에만 적용, 푸터 로고는 기존 평면 유지. 글꼴·크기·자간·위치는 기존 규칙 그대로(색 표현만 변경)
+   - 위→아래: 밝은 네이비 하이라이트 → 중앙 짙은 수평 경계 → 하단 반사. 흰 배경 대비 최저 5.36:1(#4a6d96) ~ 최고 16.45:1
+   - 입체감: 1px 경계 + 2px 흐림 음영만. 움직임·광택 애니메이션 없음
+   - background-clip:text 미지원 환경은 @supports 밖이라 기존 글자색(--ink), 고대비 모드는 시스템 글자색
+   ========================================================= */
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  header .brand-top b{
+    background-image:linear-gradient(180deg,#4a6d96 0%,#2c4e78 24%,#163659 46%,#0a2038 53%,#10283e 72%,#1e3e64 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 1px 0 rgba(0,23,46,.20)) drop-shadow(0 2px 1.5px rgba(0,23,46,.12))}
+}
+@media(forced-colors:active){header .brand-top b{background:none;-webkit-text-fill-color:currentColor;filter:none}}
