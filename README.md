@@ -19,21 +19,22 @@ HTML·CSS·JavaScript로 구성되어 있으며 npm 설치나 빌드가 필요�
 | 파일 | 수정할 내용 |
 |---|---|
 | index.html | 브라우저 제목, 상단 로고, 공통 헤더·푸터, 안내창 |
-| style.css | 남색·옐로우 색상, 글꼴 크기, 간격, 모바일 화면 |
-| app.js | 메뉴, 메인 구성, 목록·상세 화면, 인사말, 공사 중 안내 |
-| samples.js | 자료·사례·칼럼·작품 등 샘플 48개 |
+| css/style.css | 남색·옐로우 색상, 글꼴 크기, 간격, 모바일 화면 |
+| js/app.js | 메뉴, 메인 구성, 목록·상세 화면, 인사말, 공사 중 안내 |
+| js/samples.js | 자료·사례·칼럼·작품 등 샘플 48개 |
 | assets/ | 이미지 3개, 영상 6개, 음악 3개 |
 
-색상은 style.css 상단의 `--navy`, `--yellow`를 수정합니다.
-인사말은 app.js에서 `사람의 정체성을 존중하고`를 검색하면 찾을 수 있습니다.
-메뉴 이름은 app.js 맨 위의 `menus`에서 수정합니다.
+색상은 css/style.css 상단의 `--navy`, `--yellow`를 수정합니다.
+css/style.css 안에서 이미지를 지정할 때는 CSS 파일 위치 기준이므로 `../assets/`로 시작합니다(예: `url('../assets/hero.webp')`).
+인사말은 js/app.js에서 `사람의 정체성을 존중하고`를 검색하면 찾을 수 있습니다.
+메뉴 이름은 js/app.js 맨 위의 `menus`에서 수정합니다.
 
-app.js에는 첫 화면용 기본 함수(baseHome/baseAbout)와 확장 함수(home/about/page/read)가 함께 있습니다.
+js/app.js에는 첫 화면용 기본 함수(baseHome/baseAbout)와 확장 함수(home/about/page/read)가 함께 있습니다.
 샘플 목록과 상세 페이지 수정은 파일 하단의 마지막 page/read 함수를 기준으로 하세요.
 
 ## 3. 글 수정 및 추가
 
-samples.js에서 원하는 제목을 Ctrl+F로 검색합니다.
+js/samples.js에서 원하는 제목을 Ctrl+F로 검색합니다.
 - title: 제목
 - summary: 목록에 표시되는 요약
 - text: 상세 본문. 배열의 각 문자열이 한 문단입니다.
@@ -53,11 +54,12 @@ samples.js에서 원하는 제목을 Ctrl+F로 검색합니다.
 | gallery | 시네마, 동영상, 음악, 이미지 |
 | column | 연구소 칼럼, 전문가 칼럼 |
 
-분류 이름을 바꾸면 menus와 samples.js의 해당 값도 함께 맞춰야 합니다.
+분류 이름을 바꾸면 menus와 js/samples.js의 해당 값도 함께 맞춰야 합니다.
 
 ## 4. 작품 교체
 
-assets 폴더에 새 파일을 넣고 samples.js의 다음 항목을 수정합니다.
+assets 폴더에 새 파일을 넣고 js/samples.js의 다음 항목을 수정합니다.
+경로는 js 폴더가 아니라 index.html 기준이므로 `assets/`로 시작합니다.
 - media: 파일 경로(예: assets/my-movie.mp4)
 - mediaType: video / audio / image
 - poster: 영상·작품 카드의 대표 이미지 경로
