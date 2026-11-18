@@ -122,29 +122,11 @@ function baseHome(){
 function intro(name,sub,desc){
   return `<section class="page-intro"><div class="wrap"><div class="crumb"><a href="#home">HOME</a> / ${esc(name)} / ${esc(sub)}</div><span class="kicker" lang="en">KOPORA / EXPLORE</span><h1>${esc(sub)}</h1><p>${desc}</p></div></section>`
 }
-function page(section,sub){
-  let m=menus.find(m=>m.id===section);
-  if(!m)return notFound();
-  let valid=m.groups?m.groups.flatMap(g=>g.items.map(i=>g.name+' / '+i)):m.items;
-  if(!valid.includes(sub))sub=valid[0];
-  let tabs=`<div class="tabs">${valid.map(i=>`<a class="${i===sub?'on':''}" href="${href(section,i)}">${i}</a>`).join('')}</div>`;
-  if(section==='member')return intro(m.name,sub,'모든 공개 자료는 가입 없이 자유롭게 둘러볼 수 있습니다.')+`<section class="section"><div class="wrap">${tabs}<div class="soon"><div class="symbol">↗</div><span class="kicker" lang="en">UNDER CONSTRUCTION</span><h2>${sub} 기능은 공사 중입니다.</h2><p>현재 회원가입과 방문자 로그인은 받지 않습니다.<br>자료 등록·업로드는 운영자 전용으로 준비하고 있습니다.</p><a class="button dark" href="#home">메인으로 돌아가기 →</a></div></div></section>`;
-  if(section==='about')return intro(m.name,sub,'지식과 창작이 함께하는 열린 공간을 만들어 갑니다.')+`<section class="section"><div class="wrap">${tabs}${about(sub)}</div></section>`;
-  let description={portrait:'얼굴과 목소리, 정체성과 사용의 경계를 함께 탐구합니다.',ai:'기술과 인간의 창작이 만나는 지점에서 새로운 질문을 던집니다.',archive:'국가와 주제별 법령·판례·논문을 출처와 함께 정리할 공간입니다.',gallery:'시네마, 동영상, 음악, 이미지. 창작의 새로운 가능성을 만나 보세요.',column:'권리와 창작에 관한 생각을 쉽고 깊이 있게 나눕니다.'}[section];
-  let items=data.filter(d=>d.section===section&&d.sub===sub);
-  let filters=section==='archive'?`<select id="country" aria-label="국가 선택"><option>국가 전체</option><option>한국</option><option>미국</option><option>EU</option><option>일본</option><option>중국</option></select>`:'';
-  return intro(m.name,sub,description)+`<section class="section"><div class="wrap">${tabs}<div class="filter-bar">${filters}<input id="search" type="search" placeholder="제목으로 찾아보기" aria-label="제목 검색"></div><div class="result-count" id="count">${items.length}개의 소개 콘텐츠</div><div class="list-grid" id="results">${items.map(card).join('')}</div><div class="empty" id="empty" ${items.length?'hidden':''}><span class="kicker" lang="en">COMING SOON</span><h2>자료를 차근차근 준비하고 있습니다.</h2><p>${section==='gallery'?'실제 작품은 아직 등록되지 않았습니다.':'출처를 확인한 자료와 콘텐츠를 운영자가 직접 등록할 예정입니다.'}<br>방문자 업로드와 회원가입은 현재 제공하지 않습니다.</p><a class="button dark" href="#home">메인으로 →</a></div></div></section>`
-}
 function baseAbout(sub){
   /* 연혁: ['날짜','내용'] 항목을 HISTORY 에 추가하면 '연혁' 제목 아래 목록(ol.history-list)으로 표시. 비어 있으면 제목만 표시 */const HISTORY=[];
   if(sub==='연구소장 인사말')return `<section class="about-block"><h2>연구소장 인사말</h2><div><span class="screen-label">준비 중</span><p>연구소장 인사말은 정식 원고 확인 후 게시할 예정입니다.</p><p>연구소는 운영자가 직접 정보를 정리하고 창작 실험을 소개하는 방식으로 시작합니다.</p></div></section>`;
   if(sub==='연락처')return `<section class="about-block"><h2>연락처</h2><div><span class="screen-label">연락처 등록 준비 중</span><p>문의 이메일과 공식 연락처는 운영자가 확인한 뒤 공개합니다.</p><p>현재는 사이트 내 문의 접수나 파일 업로드 기능을 제공하지 않습니다.</p></div></section>`;
   return `<section class="about-block"><h2>설립 취지</h2><div><p>초상권과 AI생성콘텐츠는 일상에서 점점 가까워지고 있습니다. 관련 법령과 판례, 사례를 쉽게 찾아보고 이해할 수 있는 공간을 만들고자 합니다.</p><p>한국초상권연구소는 전문 자료를 쉽게 풀어 쓰고, 영화·영상·음악·이미지를 함께 감상하며 권리와 창작에 관한 질문을 나누는 공간을 지향합니다.</p></div></section><section class="about-block"><h2>운영 방향</h2><div><p><strong>쉽고 정확한 지식.</strong> 여러 나라의 자료를 출처와 기준일을 확인하여 정리합니다.</p><p><strong>창작과 감상의 즐거움.</strong> 다양한 AI생성콘텐츠와 창작 실험을 소개합니다.</p><p><strong>작게 시작해 꾸준히.</strong> 처음에는 운영자가 직접 자료를 올리고, 조금씩 콘텐츠를 쌓아갑니다.</p></div></section><section class="about-block about-history"><h2>연혁</h2><div>${HISTORY.length?`<ol class="history-list">${HISTORY.map(([d,t])=>`<li><span class="history-date">${esc(d)}</span> ${esc(t)}</li>`).join('')}</ol>`:''}</div></section>`
-}
-function read(id){
-  let d=data.find(d=>d.id===id);
-  if(!d)return notFound();
-  return `<div class="wrap"><article class="article"><div class="crumb"><a href="#home">HOME</a> / <a href="${href(d.section,d.sub)}">${d.sub}</a></div><span class="screen-label">소개용 콘텐츠 · 법률 자료/판례 아님</span><h1>${d.title}</h1><p>${d.summary}</p><div class="note">KOPORA 한국초상권연구소 · 탐구 방향 소개</div>${d.text.map((t,i)=>`${i===1?'<h2>함께 살펴볼 질문</h2>':''}<p>${t}</p>`).join('')}<div class="note">이 글은 사이트의 콘텐츠 구성을 보여주는 소개 글입니다. 구체적인 법령·판례의 해설이나 개별 사안의 법률 자문은 아닙니다.</div><a class="back" href="${href(d.section,d.sub)}">← 목록으로 돌아가기</a></article></div>`
 }
 function galleryPreview(sub){
   let kind=['시네마','동영상','음악','이미지'].includes(sub)?sub:'시네마';
