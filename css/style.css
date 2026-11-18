@@ -2802,3 +2802,33 @@ header .brand-en {
   padding-bottom: clamp(56px, calc(32px + 5vw), 128px);
 }
 
+/* ---------- B. 제목 크기 · 시각적 위계 (PC: h1 68 > h2 40 > h3 28/22/21 > 본문 18) ---------- */
+/* 원칙: 어느 너비에서도 기존보다 작아지지 않고 한 단계 크게. 모바일(≤600)과 태블릿·PC(≥601) 하한을 따로 둠 */
+.hero ~ .section .section-head h2 {
+  font-size: clamp(26px, 7.2vw, 28px);
+  line-height: 1.25;
+}
+.hero ~ .section .knowledge-grid .story-panel h3 {
+  font-size: clamp(23px, 6.4vw, 24px);
+}
+.hero ~ .section .gallery-grid .gallery-card h3 {
+  font-size: clamp(20px, calc(15px + 0.5vw), 22px);
+}
+.hero ~ .section .archive-columns .entry h3 {
+  font-size: clamp(19px, calc(15px + 0.4vw), 21px);
+}
+.hero ~ .institute-band h2 {
+  font-size: 26px;
+}
+@media (min-width: 601px) {
+  .hero ~ .section .section-head h2 {
+    font-size: clamp(32px, calc(20px + 1.4vw), 40px);
+  }
+  .hero ~ .section .knowledge-grid .story-panel h3 {
+    font-size: clamp(25px, calc(16px + 0.85vw), 28px);
+  }
+  .hero ~ .institute-band h2 {
+    font-size: clamp(30px, calc(18px + 1.25vw), 36px);
+  }
+}
+
