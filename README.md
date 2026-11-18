@@ -30,7 +30,7 @@ css/style.css 안에서 이미지를 지정할 때는 CSS 파일 위치 기준�
 메뉴 이름은 js/app.js 맨 위의 `menus`에서 수정합니다.
 
 js/app.js에는 첫 화면용 기본 함수(baseHome/baseAbout)와 확장 함수(home/about/page/read)가 함께 있습니다.
-샘플 목록과 상세 페이지 수정은 파일 하단의 마지막 page/read 함수를 기준으로 하세요.
+샘플 목록과 상세 페이지 수정은 js/app.js의 page/read 함수에서 합니다(각 함수는 하나씩만 있습니다).
 
 ## 3. 글 수정 및 추가
 
