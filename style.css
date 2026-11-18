@@ -354,6 +354,9 @@ body{line-height:var(--lh-body)}
 .article,.greeting{max-width:720px}
 .article>p,.greeting>p{margin-block:.9em}
 .article h2{margin:1.6em 0 .6em}
+/* 갤러리 미리보기(app.js galleryPreview) 작품 제목: 화면당 h1 하나가 되도록 h2로 바꾸고, 기존 .article h1과 같은 모양 유지(h1 기본 여백 .67em 포함) */
+.article .preview-title{font-size:37px;letter-spacing:-1px;line-height:1.4;margin:.67em 0}
+@media(max-width:600px){.article .preview-title{font-size:clamp(25px,7.5vw,29px)}}
 
 /* 연구소 소개 참고 사이트: 본문과 같은 색이라 밑줄로 링크임을 구분 (WCAG 1.4.1) */
 .about-block p a{text-decoration:underline;text-underline-offset:3px}
