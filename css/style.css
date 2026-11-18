@@ -2719,3 +2719,86 @@ header .brand-en {
     margin-right:-1.55px
   }
 }
+
+/* =========================================================
+   19. 메인 화면 레이아웃 고도화 (시안) — 메인 화면 전용
+   - 대상 클래스는 메인에서만 쓰임. 공용 .section 은 .hero ~ .section 으로 메인에만 적용
+   - 기존 규칙은 그대로 두고 이 블록이 뒤에서 덮어씀(블록을 지우면 원상 복구)
+   - 색상·글꼴·카드 모양·배치(카드 6개 3/2/1열, 갤러리 3개 3/2/1열)는 바꾸지 않음
+   ========================================================= */
+
+/* ---------- A. 히어로 확대 · 반응형 여백 ---------- */
+/* PC: 첫 화면(헤더 142px 포함)을 거의 채우고 다음 영역이 약 40px 보이도록. svh 미지원 브라우저는 vh 값 사용 */
+.hero {
+  min-height: clamp(580px, calc(100vh - 182px), 900px);
+  min-height: clamp(580px, calc(100svh - 182px), 900px);
+}
+/* 태블릿: 화면 높이에 비례, 빈 공간이 과하지 않게 상한 680px */
+@media (max-width: 950px) {
+  .hero {
+    min-height: clamp(560px, 64vh, 680px);
+    min-height: clamp(560px, 64svh, 680px);
+  }
+}
+/* 모바일: 지금과 같은 570px을 기본으로 화면이 길면 640px까지. 내용이 길면 자동으로 늘어남(min-height) */
+@media (max-width: 600px) {
+  .hero {
+    min-height: clamp(570px, 78vh, 640px);
+    min-height: clamp(570px, 78svh, 640px);
+  }
+}
+/* 히어로 안쪽: 위 여백, 아래 여백(하단 띠 47px + 40px 이상) */
+.hero-content {
+  padding-top: clamp(56px, 6vw, 96px);
+  padding-bottom: clamp(88px, 8vw, 128px);
+}
+/* 제목 위(eyebrow→제목)·아래(제목→설명), 설명→버튼 */
+.hero h1 {
+  margin-top: clamp(25px, 2vw, 36px);
+  margin-bottom: clamp(25px, 2.4vw, 44px);
+}
+.hero-actions {
+  margin-top: clamp(32px, 3.2vw, 56px);
+}
+/* 히어로 → 첫 콘텐츠(관심 분야), 관심 분야 카드 아래 */
+.quick .pick {
+  padding-top: clamp(36px, calc(24px + 3vw), 72px);
+}
+.quick .quick-grid {
+  gap: clamp(12px, calc(6px + 1.4vw), 28px);
+  padding-bottom: clamp(36px, calc(20px + 4vw), 88px);
+}
+/* 관심 분야 카드 6개 안쪽 여백(왼쪽은 기존처럼 2px 더) — 배치·모양은 그대로 */
+/* 모바일(≤600)은 기존 16px 유지, 태블릿·PC는 기존 22px 이상에서 화면에 비례해 30px까지 */
+@media (min-width: 601px) {
+  .quick .quick-grid>a {
+    padding: clamp(22px, calc(12px + 1.2vw), 30px) clamp(22px, calc(12px + 1.2vw), 30px) clamp(22px, calc(12px + 1.2vw), 30px) calc(clamp(22px, calc(12px + 1.2vw), 30px) + 2px);
+  }
+}
+/* 주요 섹션 위아래, 섹션 제목→내용 */
+.hero ~ .section {
+  padding-top: clamp(64px, calc(40px + 6vw), 140px);
+  padding-bottom: clamp(64px, calc(40px + 6vw), 140px);
+}
+.hero ~ .section .section-head {
+  margin-bottom: clamp(28px, calc(18px + 2.4vw), 64px);
+}
+/* 이야기 카드 2개, 갤러리 3개 사이·안쪽 */
+.hero ~ .section .knowledge-grid {
+  gap: clamp(24px, calc(8px + 2.6vw), 48px);
+}
+/* 이야기 카드 안쪽: 모바일 기존 24px 유지, 태블릿·PC는 기존 30px 이상 */
+@media (min-width: 601px) {
+  .hero ~ .section .knowledge-grid .story-panel {
+    padding: clamp(30px, calc(18px + 1.4vw), 44px);
+  }
+}
+.hero ~ .section .gallery-grid {
+  gap: clamp(20px, calc(8px + 1.6vw), 36px);
+}
+/* 연구소 띠 위아래 */
+.hero ~ .institute-band {
+  padding-top: clamp(56px, calc(32px + 5vw), 128px);
+  padding-bottom: clamp(56px, calc(32px + 5vw), 128px);
+}
+
