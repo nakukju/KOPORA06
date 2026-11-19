@@ -534,3 +534,110 @@ main.addEventListener('click',e=>{
   });
   window.addEventListener('beforeprint',showAll);
 })();
+/* 메인 히어로 얼굴 영상 (style.css 24번) — 문서에서 메인 화면을 처음 그릴 때 1회, PC·태블릿(601px 이상)만
+   - 기존 CSS 배경 이미지가 먼저 보이고(LCP), 영상은 window load 이후에만 요청. 영상 요소는 재생 직전에 히어로에 넣음(준비 중 첫 프레임이 LCP 후보가 되지 않게)
+   - 페이지 시작 2.0초(제목 문구 애니메이션 종료 후)에 재생, 0.4초 페이드 인 → 영상 4.45초에서 0.45초 페이드 아웃 → 기존 정지 이미지
+     (움직임 합계 약 4.9초 ≤ 5초라 정지 버튼 없음, WCAG 2.2.2)
+   - 6초까지 준비되지 않으면 재생하지 않음. 실패·자동 재생 거부·동작 줄이기·숨은 탭·데이터 절약·화면 이동 시 정지 이미지 유지 */
+(()=>{
+  const START=2000,DEADLINE=6000,FADE_IN=400,FADE_OUT=450,OUT_AT=4.45;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)'),small=matchMedia('(max-width: 600px)');
+  let played=false,cur=null;
+  const blocked=()=>{
+    if(reduce.matches||small.matches||document.visibilityState==='hidden')return true;
+    const c=navigator.connection;
+    if(c&&(c.saveData||/(^|-)(2g|3g)$/.test(c.effectiveType||'')))return true;
+    const v=document.createElement('video');
+    return !v.canPlayType('video/webm; codecs="av01.0.08M.08"')&&!v.canPlayType('video/mp4; codecs="avc1.640028"')
+  };
+  const teardown=fade=>{
+    const c=cur;
+    if(!c)return;
+    cur=null;
+    const kill=()=>{
+      try{
+        c.v.pause();
+        c.v.querySelectorAll('source').forEach(s=>s.remove());
+        c.v.load()
+      }catch(err){}
+      c.box.remove()
+    };
+    if(fade&&c.box.classList.contains('on')){
+      c.box.style.setProperty('--hv-fade',FADE_OUT+'ms');
+      c.box.classList.remove('on');
+      setTimeout(kill,FADE_OUT+50)
+    }else kill()
+  };
+  const start=()=>{
+    const hero=document.querySelector('#main .hero');
+    if(played||!hero||cur)return;
+    played=true;  /* 메인이 아닌 화면으로 처음 들어온 경우에도 이후 재생하지 않음 */
+    if(blocked())return;
+    const box=document.createElement('div'),v=document.createElement('video');
+    box.className='hero-media';
+    box.setAttribute('aria-hidden','true');
+    v.muted=v.defaultMuted=v.playsInline=v.disablePictureInPicture=true;
+    v.preload='auto';
+    v.tabIndex=-1;
+    ['muted','playsinline','disableremoteplayback'].forEach(a=>v.setAttribute(a,''));
+    [['assets/hero-face.webm','video/webm; codecs="av01.0.08M.08"'],['assets/hero-face.mp4','video/mp4; codecs="avc1.640028"']].forEach(([src,type])=>{
+      const s=document.createElement('source');
+      s.src=src;
+      s.type=type;
+      v.append(s)
+    });
+    box.append(v);
+    const c=cur={hero,box,v};
+    v.addEventListener('error',()=>teardown(),true);
+    const tick=()=>{
+      if(cur!==c)return;
+      if(v.currentTime>=OUT_AT||v.ended)teardown(true);
+      else if('requestVideoFrameCallback' in v)v.requestVideoFrameCallback(tick);
+      else setTimeout(tick,40)
+    };
+    v.addEventListener('playing',()=>{
+      if(cur!==c)return;
+      box.style.setProperty('--hv-fade',FADE_IN+'ms');
+      box.classList.add('on');
+      tick()
+    },{once:true});
+    v.addEventListener('ended',()=>teardown(true));
+    const ready=new Promise(ok=>{
+      if(v.readyState>=4)ok();
+      else v.addEventListener('canplaythrough',ok,{once:true})
+    });
+    Promise.race([ready,new Promise(ok=>setTimeout(()=>ok('late'),Math.max(0,DEADLINE-performance.now())))]).then(r=>{
+      if(cur!==c)return;
+      if(r==='late')return teardown();
+      setTimeout(()=>{
+        if(cur!==c)return;
+        if(blocked()||!document.contains(hero))return teardown();
+        hero.prepend(box);
+        const p=v.play();
+        if(p&&p.catch)p.catch(()=>teardown())
+      },Math.max(0,START-performance.now()))
+    })
+  };
+  window.addEventListener('hashchange',()=>{
+    if(cur&&!document.contains(cur.hero))teardown()
+  });
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='hidden')teardown()
+  });
+  window.addEventListener('pagehide',()=>teardown());
+  window.addEventListener('pageshow',e=>{
+    if(e.persisted){
+      teardown();
+      played=true
+    }
+  });
+  reduce.addEventListener?.('change',()=>{
+    if(reduce.matches)teardown()
+  });
+  small.addEventListener?.('change',()=>{
+    if(small.matches)teardown()
+  });
+  window.addEventListener('beforeprint',()=>teardown());
+  if(document.readyState==='complete')start();
+  else window.addEventListener('load',start,{once:true})
+})();

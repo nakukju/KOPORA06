@@ -3021,3 +3021,64 @@ header .brand-en {
     --ks-gap: .15s;
   }
 }
+
+/* =========================================================
+   24. 메인 히어로 얼굴 영상 — 메인 화면 전용 (app.js 'hv' 블록)
+   - 기존 .hero 배경(그라데이션 + hero.webp)은 그대로: 정지 이미지 · LCP · 실패 시 대체 화면
+   - app.js가 PC·태블릿(601px 이상)에서만 .hero-media(영상 층)를 재생 직전에 넣고, 1회 재생 뒤 페이드로 지움
+   - 영상 위치는 배경과 같은 cover · 위치(50% / 950px 이하 60%)라 정지 이미지와 같은 자리에 겹침
+   - 영상 위에 기존과 같은 그라데이션을 다시 덮어 문구 가독성 유지. 절대 위치라 레이아웃 변화 없음(CLS 0)
+   - 모바일 · 동작 줄이기 · 인쇄에서는 표시하지 않음
+   ========================================================= */
+.hero>.hero-content {
+  position: relative;
+  z-index: 1;
+}
+.hero>.hero-bottom {
+  z-index: 1;
+}
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--hv-fade, .4s) linear;
+}
+.hero-media.on {
+  opacity: 1;
+}
+.hero-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+.hero-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #001a35ee 0%, #001a35ba 32%, #001a3508 75%);
+}
+@media (max-width: 950px) {
+  .hero-media video {
+    object-position: 60% 50%;
+  }
+}
+@media (max-width: 600px) {
+  .hero-media {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-media {
+    display: none !important;
+  }
+}
+@media print {
+  .hero-media {
+    display: none !important;
+  }
+}
