@@ -234,7 +234,7 @@ render();
     }
   }),{rootMargin:'0px 0px -40px 0px'});
   const scan=()=>main.querySelectorAll(SEL).forEach(el=>{
-    if(el.classList.contains('reveal'))return;
+    if(el.classList.contains('reveal')||main.querySelector('.hero'))return;  /* 메인 화면 카드는 아래 스크롤 등장 효과(ks)가 담당 */
     el.classList.add('reveal');
     io.observe(el)
   });
@@ -417,4 +417,120 @@ main.addEventListener('click',e=>{
     if(e.persisted)showAll()
   });
   window.addEventListener('beforeprint',showAll)
+})();
+
+/* 메인 화면 스크롤 등장 효과 (style.css 23번) — 메인 화면(home) 렌더링 직후에만 동작
+   - 대상은 카드·박스 전체(GROUPS). 글자·구조·Tab 순서·aria는 건드리지 않고 클래스와 순서 번호(--ks-i)만 잠시 붙임
+   - 처음 화면에 이미 보이거나 화면 위쪽에 있는 대상은 숨기지 않음(큰 모니터에서 스크롤 전까지 빈 화면이 되지 않도록)
+   - 화면 아래에 있는 대상만 대기 → 화면 아래쪽 8% 선을 넘으면 1회 등장. 위쪽 여백을 크게 둬 빠르게 지나친 대상도 바로 처리
+   - 영역별로 문서(탭의 현재 페이지 로드)당 1회. 이미 등장한 영역은 메인 화면에 다시 와도 정상 표시(문구 애니메이션과 같은 기준)
+   - 동작 줄이기·IntersectionObserver 미지원·백그라운드 탭·인쇄·캐시 복원(bfcache)·오류·키보드 포커스: 즉시 정상 표시
+   - 타이머·스크롤 이벤트 없음. 관찰은 등장 즉시 해제, 메인 화면을 떠나면 전부 해제 */
+(()=>{
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)'),main=document.getElementById('main');
+  const GROUPS=[
+    {key:'quick',sel:'.quick .quick-grid>a'},
+    {key:'story',sel:'.knowledge-grid>.story-panel'},
+    {key:'gallery',sel:'.gallery-grid>.gallery-card'},
+    {key:'archive',sel:'.archive-columns>div'}];
+  const played=new Set(),live=new Map();  /* live: 대기·재생 중인 요소 → 영역 key */
+  let io=null,first=null;
+  /* 정상 표시로 되돌림. now: 움직임 없이 즉시(포커스·인쇄·캐시 복원 등) — 카드의 기존 opacity 전환(0.4초)도 이때는 끄고, 빈 style 속성도 남기지 않음 */
+  const done=(el,now)=>{
+    if(now)el.style.transition='none';
+    el.classList.remove('ks-wait','ks-play');
+    el.style.removeProperty('--ks-i');
+    el.style.removeProperty('--ks-base');
+    if(now){
+      void el.offsetWidth;
+      el.style.removeProperty('transition')
+    }
+    if(!el.getAttribute('style'))el.removeAttribute('style');
+    live.delete(el)
+  };
+  const showAll=()=>{
+    io&&io.disconnect();
+    first&&first.disconnect();
+    first=null;
+    [...live.keys()].forEach(el=>done(el,true))
+  };
+  /* 함께 화면에 들어온 대상들: 영역마다 보이는 순서(위→아래, 왼쪽→오른쪽)로 번호를 매겨 시간차 등장.
+     이미 지나쳐 화면 위로 올라간 대상(빠른 스크롤·중간으로 바로 이동)은 움직임 없이 바로 표시 */
+  const play=ents=>{
+    const pos=new Map(ents.map(e=>[e.target,e.boundingClientRect])),n={},els=[...pos.keys()];  /* 관찰자가 준 위치 사용(추가 레이아웃 계산 없음) */
+    els.sort((a,b)=>pos.get(a).top-pos.get(b).top||pos.get(a).left-pos.get(b).left);
+    /* 갤러리 카드: 「지식에서, 감상으로.」 문구가 재생 중이면 조금 늦게 시작해 두 움직임이 한꺼번에 겹치지 않게 함 */
+    const late=document.querySelector('#main .feature-dark .section-head h2.km-play');
+    els.forEach(el=>{
+      const key=live.get(el);
+      played.add(key);
+      if(pos.get(el).bottom<=0)return done(el,true);
+      n[key]=(n[key]??-1)+1;
+      el.style.setProperty('--ks-i',Math.min(n[key],5));
+      if(late&&key==='gallery')el.style.setProperty('--ks-base','var(--ks-late)');
+      el.classList.replace('ks-wait','ks-play');
+      el.addEventListener('animationend',function end(e){
+        if(e.target!==el)return;
+        el.removeEventListener('animationend',end);
+        done(el)
+      })
+    })
+  };
+  const setup=()=>{
+    showAll();
+    if(reduce.matches||!('IntersectionObserver' in window)||!main.querySelector('.hero')||document.visibilityState==='hidden')return;
+    try{
+      const cand=new Map();
+      GROUPS.forEach(g=>{
+        if(!played.has(g.key))main.querySelectorAll(g.sel).forEach(el=>cand.set(el,g.key))
+      });
+      if(!cand.size)return;
+      io=new IntersectionObserver(es=>{
+        try{
+          const ins=es.filter(e=>e.isIntersecting&&live.has(e.target));
+          ins.forEach(e=>io.unobserve(e.target));
+          if(ins.length)play(ins)
+        }catch(err){
+          showAll()
+        }
+      },{rootMargin:'100000px 0px -8% 0px'});
+      /* 첫 판정도 관찰자로(첫 페인트 전 강제 레이아웃 없음): 첫 화면 안·위쪽 대상은 그대로, 화면 아래 대상만 대기.
+         화면 밖 요소라 대기 상태로 바뀌는 순간이 보이지 않음 */
+      first=new IntersectionObserver(es=>{
+        first.disconnect();
+        first=null;
+        try{
+          es.forEach(e=>{
+            if(e.isIntersecting||e.boundingClientRect.top<0||!cand.has(e.target))return;
+            e.target.classList.add('ks-wait');
+            live.set(e.target,cand.get(e.target));
+            io.observe(e.target)
+          })
+        }catch(err){
+          showAll()
+        }
+      });
+      cand.forEach((k,el)=>first.observe(el))
+    }catch(err){
+      showAll()
+    }
+  };
+  window.addEventListener('hashchange',setup);  /* render()·관심 분야 순서 적용 뒤에 등록 → 최종 화면 기준 */
+  setup();
+  /* Tab 등으로 대기·재생 중인 카드(또는 그 안의 링크)에 포커스가 가면 움직임을 끝내고 즉시 표시 */
+  main.addEventListener('focusin',e=>{
+    const el=e.target.closest('.ks-wait,.ks-play');
+    if(el){
+      io&&io.unobserve(el);
+      played.add(live.get(el));
+      done(el,true)
+    }
+  });
+  reduce.addEventListener?.('change',()=>{
+    if(reduce.matches)showAll()
+  });
+  window.addEventListener('pageshow',e=>{
+    if(e.persisted)showAll()
+  });
+  window.addEventListener('beforeprint',showAll);
 })();

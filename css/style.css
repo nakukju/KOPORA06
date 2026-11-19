@@ -2967,3 +2967,57 @@ header .brand-en {
     transition:none
   }
 }
+
+/* =========================================================
+   23. 메인 화면 스크롤 등장 효과 — 메인 화면 전용 (app.js 'ks' 블록)
+   - 대상(카드·박스 전체가 한 단위, 내부 요소는 따로 움직이지 않음):
+     관심 분야 카드 6개 · 함께 생각하는 권리 이야기 카드 2개 · 갤러리 카드 3개 · 자료마당·칼럼 박스 2개
+   - app.js가 첫 화면 밖에 있는 대상에만 .ks-wait(대기)를 붙이고, 화면에 들어오면 .ks-play(재생) → 끝나면 클래스를 지워 기존 정적 화면
+   - 움직임은 opacity와 translate 속성만 사용: 호버·포커스의 transform과 별개 속성이라 충돌 없음, 레이아웃·크기 불변(CLS 0)
+   - 시간차 = --ks-gap × 함께 들어온 순서(--ks-i, 화면 위→아래·왼쪽→오른쪽). 따로 들어오면 각자 즉시 시작
+   - 화면 출력이면서 동작 줄이기를 켜지 않은 경우에만 적용 → 동작 줄이기·인쇄·JS 실패 시 항상 즉시 표시
+   ========================================================= */
+@keyframes ks-rise {
+  from {
+    opacity: 0;
+    translate: 0 var(--ks-dy);
+  }
+  to {
+    opacity: 1;
+    translate: none;
+  }
+}
+@media screen and (prefers-reduced-motion: no-preference) {
+  .ks-wait {
+    opacity: 0;
+  }
+  .ks-play {
+    animation: ks-rise var(--ks-dur) cubic-bezier(.22, .61, .36, 1) both;
+    animation-delay: calc(var(--ks-base, 0s) + var(--ks-gap) * var(--ks-i, 0));
+  }
+  /* 관심 분야: 10px · 0.6초 · 0.12초 간격 (6개 동시 → 1.2초) */
+  .quick .quick-grid>a {
+    --ks-dy: 10px;
+    --ks-dur: .6s;
+    --ks-gap: .12s;
+  }
+  /* 함께 생각하는 권리 이야기: 8px · 0.7초 · 0.2초 간격 (2개 → 0.9초) */
+  .knowledge-grid>.story-panel {
+    --ks-dy: 8px;
+    --ks-dur: .7s;
+    --ks-gap: .2s;
+  }
+  /* 갤러리: 12px · 0.75초 · 0.15초 간격 (3개 → 1.05초) */
+  .gallery-grid>.gallery-card {
+    --ks-dy: 12px;
+    --ks-dur: .75s;
+    --ks-gap: .15s;
+    --ks-late: .3s;  /* 문구 재생 중이면 시작을 늦추는 값 */
+  }
+  /* 자료마당·칼럼 박스: 8px · 0.6초 · 0.15초 간격 (2개 → 0.75초). 박스 안 목록은 따로 움직이지 않음 */
+  .archive-columns>div {
+    --ks-dy: 8px;
+    --ks-dur: .6s;
+    --ks-gap: .15s;
+  }
+}
