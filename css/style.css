@@ -2847,3 +2847,81 @@ header .brand-en {
 .hero ~ .section .archive-columns>div>.entry:last-child {
   border-bottom: 0;
 }
+
+/* =========================================================
+   20. 메인 화면 시네마틱 문구 애니메이션 — 메인 화면 전용
+   - 대상: 히어로 h1 3줄 · 「지식에서, 감상으로.」 h2 · 연구소 띠 h2 2줄 (설명문·버튼은 움직이지 않음)
+   - app.js가 제목 안 글자를 줄·구절 단위 span.km-l로 감싸고(글자·공백·<br>·<em>은 그대로)
+     제목에 .km-wait(대기) → .km-play(재생) 클래스를 붙였을 때만 움직임. 끝나면 클래스를 지워 기존과 같은 정적 화면
+   - 움직임은 opacity·transform만 사용 → 레이아웃·높이·줄바꿈 불변(CLS 0)
+   - 화면 출력(screen)이면서 동작 줄이기를 켜지 않은 경우에만 적용 → 동작 줄이기·인쇄는 항상 즉시 표시
+   ========================================================= */
+@keyframes km-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--km-dy));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes km-slide {
+  from {
+    opacity: 0;
+    transform: translateX(var(--km-dx));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* 줄·구절 상자: transform을 적용하려면 inline-block이 필요 → 대기·재생 중에만 inline-block, 끝나면 원래 글자 흐름(inline)으로 복귀
+     (끝난 뒤 글자 위치는 기존과 같음. 줄마다 하나씩이라 줄바꿈 위치도 그대로) */
+  .km-wait .km-l,
+  .km-play .km-l {
+    display: inline-block;
+  }
+  /* 「지식에서,」 상자 끝에서는 Chrome이 마지막 글자의 자간(-1px, .section-head h2)을 생략해 뒤 구절이 1px 밀림 → 같은 값으로 보정 */
+  .feature-dark .section-head h2:is(.km-wait, .km-play) .km-l:first-of-type {
+    margin-right: -1px;
+  }
+  /* 공통: 대기 중에는 숨김, 재생 중에는 줄마다 지연(--km-gap × 순서)을 두고 등장. fill both → 시작 전 숨김, 끝난 뒤 정상 표시 */
+  .km-wait .km-l {
+    opacity: 0;
+  }
+  .km-play .km-l {
+    animation: var(--km-name) var(--km-dur) var(--km-ease) both;
+  }
+  .km-play .km-l:nth-of-type(2) {
+    animation-delay: var(--km-gap);
+  }
+  .km-play .km-l:nth-of-type(3) {
+    animation-delay: calc(var(--km-gap) * 2);
+  }
+  /* ① 히어로 핵심 문구: 아래에서 위 12px, 0.32초 간격 · 0.8초 → 전체 1.44초 (페이지를 열 때) */
+  .hero h1 {
+    --km-name: km-rise;
+    --km-dy: 12px;
+    --km-dur: .8s;
+    --km-gap: .32s;
+    --km-ease: cubic-bezier(.22, .61, .36, 1);
+  }
+  /* ② 「지식에서, 감상으로.」: 왼쪽에서 오른쪽 18px, 0.8초 간격 · 0.95초 → 전체 1.75초 (화면에 들어올 때) */
+  .feature-dark .section-head h2 {
+    --km-name: km-slide;
+    --km-dx: -18px;
+    --km-dur: .95s;
+    --km-gap: .8s;
+    --km-ease: cubic-bezier(.25, .6, .3, 1);
+  }
+  /* ③ 연구소 띠: 아래에서 위 8px, 1초 간격 · 1.1초 → 전체 2.1초 (화면에 들어올 때, 가장 차분하게) */
+  .institute-band h2 {
+    --km-name: km-rise;
+    --km-dy: 8px;
+    --km-dur: 1.1s;
+    --km-gap: 1s;
+    --km-ease: cubic-bezier(.33, .6, .4, 1);
+  }
+}

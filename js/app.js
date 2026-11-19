@@ -331,3 +331,101 @@ main.addEventListener('click',e=>{
   });
   document.addEventListener('visibilitychange',()=>en.classList.toggle('is-hidden-tab',document.hidden))
 })();
+/* 메인 화면 시네마틱 문구 애니메이션 (style.css 20번) — 메인 화면(home) 렌더링 직후에만 동작
+   - 문구별로 문서(탭의 현재 페이지 로드)당 최대 1회. 이미 재생한 문구는 메인 화면에 다시 와도 즉시 정상 표시
+   - 새로고침·새 탭은 새 문서라 다시 1회. 뒤로·앞으로(#주소 이동)는 같은 문서라 재생 안 함. 캐시 복원(bfcache)은 즉시 완료 상태
+   - 동작 줄이기·IntersectionObserver 미지원·백그라운드 탭에서 열림·오류 발생 시: 숨기지 않고 바로 표시
+   - 글자는 그대로 두고 줄·구절만 span.km-l로 감쌈(제목 h1·h2, 읽는 순서·접근성 이름 불변). 타이머 없음, 스크롤 이벤트 없음 */
+(()=>{
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+  /* unit: line = <br>로 나뉜 줄, phrase = 쉼표 뒤 공백으로 나뉜 구절 */
+  const SPECS=[
+    {key:'hero',sel:'.hero h1',unit:'line',view:false},
+    {key:'gallery',sel:'.feature-dark .section-head h2',unit:'phrase',view:true},
+    {key:'band',sel:'.institute-band h2',unit:'line',view:true}];
+  const played=new Set(),live=new Map();  /* live: 지금 화면의 제목 → spec */
+  let io=null;
+  const wrap=nodes=>{
+    const s=document.createElement('span');
+    s.className='km-l';
+    nodes[0].before(s);
+    s.append(...nodes);
+  };
+  const split=(h,unit)=>{
+    const text=h.textContent;
+    if(unit==='line'){
+      let run=[];
+      [...h.childNodes,null].forEach(n=>{
+        if(n&&n.nodeName!=='BR'){
+          run.push(n);
+          return
+        }
+        if(run.some(x=>x.textContent.trim()))wrap(run);
+        run=[]
+      })
+    }else{
+      const t=h.firstChild,m=t&&t.nodeType===3&&h.childNodes.length===1&&/^(.+?,)(\s+)(.+)$/.exec(t.data);
+      if(!m)return false;
+      const sp=document.createTextNode(m[2]);
+      t.data=m[1];
+      t.after(sp,document.createTextNode(m[3]));
+      wrap([t]);
+      wrap([sp.nextSibling])
+    }
+    return h.textContent===text&&h.querySelectorAll('.km-l').length>1
+  };
+  const show=h=>h.classList.remove('km-wait','km-play'),
+    showAll=()=>live.forEach((s,h)=>show(h));
+  const play=(h,s)=>{
+    played.add(s.key);
+    h.classList.remove('km-wait');
+    h.classList.add('km-play');
+    h.querySelector('.km-l:last-of-type').addEventListener('animationend',()=>show(h),{once:true})
+  };
+  const setup=()=>{
+    io&&io.disconnect();
+    live.clear();
+    if(reduce.matches||!document.querySelector('#main .hero'))return;
+    try{
+      SPECS.forEach(s=>{
+        const h=document.querySelector('#main '+s.sel);
+        if(!h||played.has(s.key))return;
+        const html=h.innerHTML;
+        if(!split(h,s.unit)){
+          h.innerHTML=html;
+          return
+        }
+        live.set(h,s);
+        if(document.visibilityState==='hidden'){
+          played.add(s.key);
+          return
+        }  /* 백그라운드 탭: 움직임 없이 표시 */
+        if(!s.view)return play(h,s);
+        if(!('IntersectionObserver' in window))return;
+        io=io||new IntersectionObserver(es=>es.forEach(e=>{
+          if(!e.isIntersecting)return;
+          io.unobserve(e.target);
+          const sp=live.get(e.target);
+          if(sp)play(e.target,sp)
+        }),{rootMargin:'100000px 0px -12% 0px'});  /* 위쪽을 크게 넓혀 빠르게 지나쳐 화면 위로 올라간 제목도 놓치지 않고 처리 */
+        h.classList.add('km-wait');
+        io.observe(h)
+      })
+    }catch(err){
+      io&&io.disconnect();
+      showAll()
+    }
+  };
+  window.addEventListener('hashchange',setup);  /* render()의 hashchange 리스너보다 뒤에 등록 → 새 화면이 그려진 직후 실행 */
+  setup();
+  reduce.addEventListener?.('change',()=>{
+    if(reduce.matches){
+      io&&io.disconnect();
+      showAll()
+    }
+  });
+  window.addEventListener('pageshow',e=>{
+    if(e.persisted)showAll()
+  });
+  window.addEventListener('beforeprint',showAll)
+})();
