@@ -314,21 +314,10 @@ main.addEventListener('click',e=>{
   t.focus({preventScroll:true})
 });
 
-/* 헤더 영문 명칭 모션 제어: 버튼 준비 시 반복(.is-loop), 일시정지/재생(키보드 Enter·Space 기본 지원), 동작 줄이기 시 버튼 숨김, 비활성 탭에서 정지 */
+/* 헤더 영문 명칭 모션: 페이지를 열 때 1회만 재생(style.css 15번, 5초 이내 종료라 정지 버튼 없음). 동작 줄이기는 CSS에서 미적용, 비활성 탭에서는 진행 정지
 (()=>{
-  const en=document.querySelector('.brand-en-motion'),btn=document.querySelector('.en-motion-toggle');
-  if(!en||!btn)return;
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)'),sync=()=>{
-    btn.hidden=reduce.matches
-  };
-  sync();
-  reduce.addEventListener?.('change',sync);
-  en.classList.add('is-loop');
-  btn.addEventListener('click',()=>{
-    const p=en.classList.toggle('is-paused'),l=p?'영문 명칭 움직임 다시 재생':'영문 명칭 움직임 일시정지';
-    btn.setAttribute('aria-pressed',String(p));
-    btn.title=l
-  });
+  const en=document.querySelector('.brand-en-motion');
+  if(!en)return;
   document.addEventListener('visibilitychange',()=>en.classList.toggle('is-hidden-tab',document.hidden))
 })();
 /* 메인 화면 시네마틱 문구 애니메이션 (style.css 20번) — 메인 화면(home) 렌더링 직후에만 동작
