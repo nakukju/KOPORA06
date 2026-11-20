@@ -8,6 +8,8 @@
     <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- KFA-02 메인 화면(#home)으로 들어올 때만 히어로 정지 이미지를 미리 요청(LCP 단축). CSS보다 앞에 두어 CSS를 기다리지 않음 -->
+    <script>if((location.hash.slice(1).split('/')[0]||'home')==='home'){const l=document.createElement('link');l.rel='preload';l.as='image';l.href='assets/hero.webp';l.fetchPriority='high';document.head.append(l)}</script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
     <link rel="stylesheet" href="css/style.css">
   </head>

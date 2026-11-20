@@ -3082,3 +3082,22 @@ header .brand-en {
     display: none !important;
   }
 }
+
+/* KFA-01 첫 화면 이동(CLS) 방지: app.js가 본문을 넣기 전(#main이 빈 동안)에만 높이를 확보해
+   푸터가 헤더 바로 아래에 잠깐 보였다가 밀려나는 현상을 막음. 본문이 들어오면 적용되지 않음 */
+#main:empty {
+  min-height:100vh;
+  min-height:100svh
+}
+
+/* KFA-04 큰 확대(약 250~400%) 대응: 실제 Chrome 400% 확대(CSS 314×175)에서 고정 헤더와 하단 문의 띠가 화면의 90%를 가림.
+   화면이 좁고(≤600px) 동시에 매우 낮을 때(≤300px)만 헤더 고정을 풀고(relative: 모바일 메뉴 위치 기준은 유지) 문의 띠를 숨김.
+   일반 세로 휴대폰·태블릿·PC와 폭 640px 이상의 가로 휴대폰은 이 조건에 들어오지 않음. 문의는 푸터의 CONTACT US로 가능 */
+@media (max-width:600px) and (max-height:300px) {
+  header {
+    position:relative
+  }
+  .contact-bar {
+    display:none
+  }
+}
